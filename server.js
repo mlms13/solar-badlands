@@ -4,6 +4,7 @@ require('nko')('tojaOcb0vsxbdxU0');
 var isProduction = (process.env.NODE_ENV === 'production');
 var express = require('express');
 var routes = require('./routes');
+var user = require('./routes/user.js');
 var http = require('http');
 var path = require('path');
 var db = require('./modules/db.js');
@@ -28,6 +29,15 @@ app.use(require('less-middleware')({ src: path.join(__dirname, 'public') }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', routes.index);
+
+app.post('/', function (req, res) {
+    var handle = req.param('tw-handle');
+    handle = handle.indexOf("@") === 0 ? handle.slice(1) : handle;
+
+    res.redirect('/user/' + handle);
+});
+
+app.get('/user/:handle', user.show);
 
 twitter.stream.on('tweet', function (tweet) {
     if (tweet.text.indexOf("@solarbadlands") === 0) {

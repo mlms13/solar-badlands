@@ -1,6 +1,6 @@
 extends layout
 
 block content
-    form.centered.login
+    form.centered.login(action="/", method="post")
         h1 Check Your Progress
-        input.form-control(placeholder="Enter your Twitter username")
+        input.form-control(placeholder="Enter your Twitter username", name="tw-handle")
