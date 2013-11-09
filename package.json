@@ -1,6 +1,6 @@
 {
   "name": "nko4-polar-badlands",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Polar Badlands",
   "main": "server.js",
   "scripts": {
@@ -11,7 +11,10 @@
     "url": "git@github.com:nko4/polar-badlands.git"
   },
   "dependencies": {
-    "nko": "*"
+    "nko": "*",
+    "express": "3.4.4",
+    "jade": "*",
+    "less-middleware": "*"
   },
   "engines": {
     "node": "0.10.x"
