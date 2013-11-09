@@ -2,20 +2,35 @@
 require('nko')('tojaOcb0vsxbdxU0');
 
 var isProduction = (process.env.NODE_ENV === 'production');
+var express = require('express');
+var routes = require('./routes');
 var http = require('http');
+var path = require('path');
 var port = (isProduction ? 80 : 8000);
 
-http.createServer(function (req, res) {
-  // http://blog.nodeknockout.com/post/35364532732/protip-add-the-vote-ko-badge-to-your-app
-  var voteko = '<iframe src="http://nodeknockout.com/iframe/polar-badlands" frameborder=0 scrolling=no allowtransparency=true width=115 height=25></iframe>';
+var app = express();
 
-  res.writeHead(200, {'Content-Type': 'text/html'});
-  res.end('<html><body>' + voteko + '</body></html>\n');
-}).listen(port, function(err) {
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'jade');
+app.use(express.favicon());
+app.use(express.logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded());
+app.use(express.methodOverride());
+app.use(express.cookieParser('your secret here'));
+app.use(express.session());
+app.use(app.router);
+app.use(require('less-middleware')({ src: path.join(__dirname, 'public') }));
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.get('/', routes.index);
+
+http.createServer(app).listen(port, function(err) {
+
   if (err) { console.error(err); process.exit(-1); }
 
   // if run as root, downgrade to the owner of this file
-  if (process.getuid() === 0) {
+  if (process.getuid && process.getuid() === 0) {
     require('fs').stat(__filename, function(err, stats) {
       if (err) { return console.error(err); }
       process.setuid(stats.uid);
