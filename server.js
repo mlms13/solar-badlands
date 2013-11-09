@@ -43,8 +43,8 @@ app.get('/user/:handle', user.show);
 
 // Handle incoming tweets
 twitter.stream.on('tweet', function (tweet) {
-    if (tweet.text.indexOf("@solarbadlands") === 0) {
-        console.log(tweet.user.screen_name + " said: " + tweet.text.replace('@solarbadlands', ''));
+    if (tweet.text.indexOf(config.ourHandle) === 0) {
+        console.log(tweet.user.screen_name + " said: " + tweet.text.replace(config.ourHandle, ''));
 
         db.getUser(tweet.user.screen_name, function (err, user) {
             if (err) {
@@ -78,14 +78,14 @@ twitter.stream.on('tweet', function (tweet) {
                 }); 
             } else {
                 //respond to user with instructions on starting a game
+                twitter.post({ in_reply_to_status_id: tweet.id_str, status: '@' + tweet.user.screen_name + ' It doesn\'t appear you\'ve started a game yet.  Reply with START GAME in order to begin!' });
+                db.updateLog(tweet);
                 console.log("START GAME to start a freakin game, man.");
             }
         });
 
         // report current status to the user son
 
-    } else if (tweet.text.indexOf("@solarbadlands") > -1) {
-        db.updateLog(tweet);
     } else {
         console.log('Something happened, but we don\'t care about it.');
     }
