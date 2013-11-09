@@ -30,46 +30,55 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get('/', routes.index);
 
 twitter.stream.on('tweet', function (tweet) {
-  if (tweet.text.indexOf("@solarbadlands") === 0) {
-    console.log(tweet.user.screen_name + " said: " + tweet.text.replace('@solarbadlands', ''));
+    if (tweet.text.indexOf("@solarbadlands") === 0) {
+        console.log(tweet.user.screen_name + " said: " + tweet.text.replace('@solarbadlands', ''));
 
-    db.getUser(tweet.user.screen_name, function (err, user) {
-      if (err) {
-        console.log("There was an error in the db.getUser call in serverjs line 38: " + err);
-      } else {
-        if (!user) {
-          db.createUser(tweet.user.screen_name, function (err, user) {
+        db.getUser(tweet.user.screen_name, function (err, user) {
             if (err) {
-              console.log("There was an error in the db.createUser call in serverjs line 43: " + err);
+                console.log("There was an error in the db.getUser call in serverjs line 38: " + err);
+                return;
+            } 
+            if (user) {
+                // TODO: game parse tweet
+                console.log("this user exists");
+            } else if (tweet.text.toLowerCase().indexOf("start") > -1 && tweet.text.toLowerCase().indexOf("game") > -1) {
+                db.createUser(tweet.user.screen_name, function (err, user) {
+                    if (err) {
+                        console.log("There was an error in the db.createUser call in serverjs line 47: " + err);
+                        // TODO: tweet them that there was an error and if they're really upset to bother michael
+                        return;
+                    }
+                    console.log(user);
+                    // update user's location
+                        // if no error, callback will include tweeting location.look to user
+                    db.updateLog(tweet);
+                    // call                    
+                }); 
             } else {
-              console.log(user);
-              // this is where we will update the new users location
+                //respond to user with instructions on starting a game
             }
-          });
-        } else { console.log("this user exists"); }
-      }
-    });
+        });
 
-    // report current status to the user son
+        // report current status to the user son
 
-  } else if (tweet.text.indexOf("@solarbadlands") > -1) {
-    db.updateLog(tweet);
-  } else {
-    console.log('Something happened, but we don\'t care about it.');
-  }
+    } else if (tweet.text.indexOf("@solarbadlands") > -1) {
+        db.updateLog(tweet);
+    } else {
+        console.log('Something happened, but we don\'t care about it.');
+    }
 });
 
 http.createServer(app).listen(port, function(err) {
 
-  if (err) { console.error(err); process.exit(-1); }
+    if (err) { console.error(err); process.exit(-1); }
 
-  // if run as root, downgrade to the owner of this file
-  if (process.getuid && process.getuid() === 0) {
-    require('fs').stat(__filename, function(err, stats) {
-      if (err) { return console.error(err); }
-      process.setuid(stats.uid);
-    });
-  }
+    // if run as root, downgrade to the owner of this file
+    if (process.getuid && process.getuid() === 0) {
+        require('fs').stat(__filename, function(err, stats) {
+            if (err) { return console.error(err); }
+            process.setuid(stats.uid);
+        });
+    }
 
-  console.log('Server running at http://0.0.0.0:' + port + '/');
+    console.log('Server running at http://0.0.0.0:' + port + '/');
 });
