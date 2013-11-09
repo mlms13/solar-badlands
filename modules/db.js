@@ -31,7 +31,7 @@ module.exports.updateLocation = function (userStr, location, callback) {
 module.exports.updateLog = function (input, response) {
     db.log.update(
         { handle: input.user.screen_name },
-        { $push: { history: { time: new Date(), tweet: input.text, response: response } } },
+        { $push: { history: { time: new Date(), tweet: input.text, response: response.text } } },
         { upsert: true }
     );
 };
