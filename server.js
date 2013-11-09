@@ -7,6 +7,7 @@ var index = require('./routes/index.js');
 var user = require('./routes/user.js');
 var http = require('http');
 var path = require('path');
+var lessMiddleware = require('less-middleware');
 var db = require('./modules/db.js');
 var twitter = require('./modules/twitter.js');
 var port = (isProduction ? 80 : 8000);
@@ -25,7 +26,14 @@ app.use(express.methodOverride());
 app.use(express.cookieParser('your secret here'));
 app.use(express.session());
 app.use(app.router);
-app.use(require('less-middleware')({ src: path.join(__dirname, 'public') }));
+
+app.use(lessMiddleware({
+  src: __dirname + '/public/less',
+  dest: __dirname + '/public/css',
+  prefix: '/css',
+  compress: true
+}));
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Set up the basic website routes
