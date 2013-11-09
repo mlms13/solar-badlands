@@ -1,4 +1,5 @@
 var config = {
+    ourHandle = '@solarbadlands',
     mongohq_uri: 'mongodb://sbadmin:Mam!Kb57+wKSNzy7a@hanso.mongohq.com:10085/solar-badlands-db',
     consumer_key: 'csO7qzufSsGpWpCwUq7eYg',
     consumer_secret: 'nUaGE4PR3F4SrF8gDzY6jWJooXxveijphgTUkBM8Y',
