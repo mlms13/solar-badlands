@@ -1,5 +1,5 @@
 // synonyms for global actions
-var globalActions = {
+var globalActions = module.exports.globalActions = {
     'inventory': {
         synonyms: ['inventory', 'show inventory', 'show items', 'items'],
         fn: function (user) {
@@ -60,7 +60,7 @@ var getUsefulActions = function (loc) {
     return useful;
 };
 
-var parseForActions = function (loc, tweet, callback) {
+var parseForActions = module.exports.parseForActions = function (loc, tweet, callback) {
     var i, action, useful, firstAction = {};
 
     // normalize the tweet
