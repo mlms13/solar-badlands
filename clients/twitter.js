@@ -57,14 +57,12 @@ module.exports.startClient = function () {
                                 console.log("There was an error in the db.updateLocatioin call in serverjs line 71: " + err);
                                 return;
                             }
-                            console.log("you now have a freakin location!");
 
                             db.getUser(tweet.user.screen_name, function (err, user) {
                                 if (err) {
                                     console.log("There was an error in the db.getUser call in serverjs line 78: " + err);
                                     return;
                                 }
-                                console.log(user);
                                 postMessage({ in_reply_to_status_id: tweet.id_str, status: '@' + tweet.user.screen_name + ' ' + locations[user.location.area][user.location.level].message }, function (err, reply) {
                                     if (err) { console.log("There was an error in posting."); return; }
                                     db.updateLog(tweet, reply);
