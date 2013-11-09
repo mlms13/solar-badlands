@@ -77,7 +77,7 @@ twitter.stream.on('tweet', function (tweet) {
                 }); 
             } else {
                 //respond to user with instructions on starting a game
-                twitter.post({ in_reply_to_status_id: tweet.id_str, status: '@' + tweet.user.screen_name + ' It doesn\'t appear you\'ve sti have to change the end of this so it doesn you know' }, function (err, reply) {
+                twitter.post({ in_reply_to_status_id: tweet.id_str, status: '@' + tweet.user.screen_name + ' It doesn\'t appear you have a game yet. Reply with START GAME to begin!' }, function (err, reply) {
                     if (err) { console.log("There was an error in posting."); return; }
                     db.updateLog(tweet, reply);
                 });
