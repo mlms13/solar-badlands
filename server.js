@@ -56,6 +56,7 @@ twitter.stream.on('tweet', function (tweet) {
                 }); 
             } else {
                 //respond to user with instructions on starting a game
+                console.log("START GAME to start a freakin game, man.");
             }
         });
 
