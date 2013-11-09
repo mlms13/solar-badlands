@@ -1,4 +1,5 @@
 var db = require('../modules/db.js');
+var config = require('../config.js');
 
 // synonyms for global actions
 var globalActions = {
@@ -66,7 +67,7 @@ var parseForActions = function (loc, tweet, callback) {
     var i, action, useful, firstAction = {};
 
     // normalize the tweet
-    tweet = tweet.replace('@solarbadlands', '').toLowerCase();
+    tweet = tweet.replace(config.ourHandle, '').toLowerCase();
 
     // set up firstAction object
     firstAction.position = 141; // bigger than the length of a tweet
@@ -127,22 +128,3 @@ module.exports.sendInput = function (username, input, cb) {
         }
     });
 };
-
-
-// a simple test location
-
-// var loc = {
-//     actions: {
-//         'eat alien eggs': {
-//             synonyms: ['consume', 'eat eggs'],
-//             fn: function () {
-
-//             }
-//         },
-//         'go': {
-//             fn: function () {
-
-//             }
-//         }
-//     }
-// }

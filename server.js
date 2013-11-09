@@ -8,9 +8,7 @@ var user = require('./routes/user.js');
 var http = require('http');
 var path = require('path');
 var lessMiddleware = require('less-middleware');
-var db = require('./modules/db.js');
 var port = (isProduction ? 80 : 8000);
-var config = require('./config.js');
 
 // clients
 var twitter = require('./clients/twitter.js');
