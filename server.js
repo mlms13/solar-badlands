@@ -28,6 +28,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', routes.index);
 
+twitter.stream.on('tweet', function (tweet) {
+  if (tweet.text.indexOf("@solarbadlands") === 0) {
+    console.log(tweet.user.screen_name + " said: " + tweet.text.replace('@solarbadlands', ''));
+  } else {
+    console.log('Something happened, but we don\'t care about it.');
+  }
+});
+
 http.createServer(app).listen(port, function(err) {
 
   if (err) { console.error(err); process.exit(-1); }
