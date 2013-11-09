@@ -1,0 +1,11 @@
+# Node Stuff #
+##############
+node_modules
+
+# OS generated files #
+######################
+.DS_Store*
+._*
+ehthumbs.db
+Icon?
+Thumbs.db
