@@ -6,6 +6,7 @@ var express = require('express');
 var routes = require('./routes');
 var http = require('http');
 var path = require('path');
+var db = require('./modules/db.js');
 var twitter = require('./modules/twitter.js');
 var port = (isProduction ? 80 : 8000);
 
