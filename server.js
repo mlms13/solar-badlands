@@ -10,6 +10,7 @@ var path = require('path');
 var lessMiddleware = require('less-middleware');
 var db = require('./modules/db.js');
 var twitter = require('./modules/twitter.js');
+var locations = require('./modules/locations.js');
 var port = (isProduction ? 80 : 8000);
 
 var app = express();
@@ -49,7 +50,7 @@ twitter.stream.on('tweet', function (tweet) {
 
         db.getUser(tweet.user.screen_name, function (err, user) {
             if (err) {
-                console.log("There was an error in the db.getUser call in serverjs line 38: " + err);
+                console.log("There was an error in the db.getUser call in serverjs line 53: " + err);
                 return;
             } 
             if (user) {
@@ -58,7 +59,7 @@ twitter.stream.on('tweet', function (tweet) {
             } else if (tweet.text.toLowerCase().indexOf("start") > -1 && tweet.text.toLowerCase().indexOf("game") > -1) {
                 db.createUser(tweet.user.screen_name, function (err, user) {
                     if (err) {
-                        console.log("There was an error in the db.createUser call in serverjs line 47: " + err);
+                        console.log("There was an error in the db.createUser call in serverjs line 62: " + err);
                         // TODO: tweet them that there was an error and if they're really upset to bother michael
                         return;
                     }
@@ -67,12 +68,22 @@ twitter.stream.on('tweet', function (tweet) {
                         // if no error, callback will include tweeting location.look to user
                     db.updateLocation(tweet.user.screen_name, { area: "earth", level: "room" }, function (err, saved) {
                         if (err) {
-                            console.log("There was an error in the db.updateLocatioin call in serverjs line 56: " + err);
+                            console.log("There was an error in the db.updateLocatioin call in serverjs line 71: " + err);
                             return;
                         }
-                        // call location.look
-                        console.log(saved);
                         console.log("you now have a freakin location!");
+
+                        db.getUser(tweet.user.screen_name, function (err, user) {
+                            if (err) {
+                                console.log("There was an error in the db.getUser call in serverjs line 78: " + err);
+                                return;
+                            }
+                            console.log(user);
+                            twitter.post({ in_reply_to_status_id: tweet.id_str, status: '@' + tweet.user.screen_name + ' ' + locations[user.location.area][user.location.level].message }, function (err, reply) {
+                                if (err) { console.log("There was an error in posting."); return; }
+                                db.updateLog(tweet, reply);
+                            });
+                        });                        
                     });
                 }); 
             } else {
@@ -83,9 +94,6 @@ twitter.stream.on('tweet', function (tweet) {
                 });
             }
         });
-
-        // report current status to the user son
-
     } else {
         console.log('Something happened, but we don\'t care about it.');
     }
