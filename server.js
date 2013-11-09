@@ -10,6 +10,8 @@ var port = (isProduction ? 80 : 8000);
 
 var app = express();
 
+var config = require('./config.js');
+
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 app.use(express.favicon());
