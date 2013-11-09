@@ -9,13 +9,14 @@ var http = require('http');
 var path = require('path');
 var lessMiddleware = require('less-middleware');
 var db = require('./modules/db.js');
-var twitter = require('./modules/twitter.js');
-var locations = require('./modules/locations.js');
 var port = (isProduction ? 80 : 8000);
-
-var app = express();
-
 var config = require('./config.js');
+
+// clients
+var twitter = require('./clients/twitter.js');
+
+// set up app
+var app = express();
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -42,59 +43,7 @@ app.get('/', index.render);
 app.post('/', index.submit);
 app.get('/user/:handle', user.show);
 
-// Handle incoming tweets
-twitter.stream.on('tweet', function (tweet) {
-    if (tweet.text.indexOf(config.ourHandle) === 0) {
-
-        console.log(tweet.user.screen_name + " said: " + tweet.text.replace(config.ourHandle, ''));
-
-        db.getUser(tweet.user.screen_name, function (err, user) {
-            if (err) {
-                console.log("There was an error in the db.getUser call in serverjs line 53: " + err);
-                return;
-            } 
-            if (user) {
-                // TODO: game parse tweet
-                console.log("this user exists");
-            } else if (tweet.text.toLowerCase().indexOf("start") > -1 && tweet.text.toLowerCase().indexOf("game") > -1) {
-                db.createUser(tweet.user.screen_name, function (err, user) {
-                    if (err) {
-                        console.log("There was an error in the db.createUser call in serverjs line 62: " + err);
-                        // TODO: tweet them that there was an error and if they're really upset to bother michael
-                        return;
-                    }
-                    console.log(user);
-                    // update user's location
-                        // if no error, callback will include tweeting location.look to user
-                    db.updateLocation(tweet.user.screen_name, { area: "earth", level: "room" }, function (err, saved) {
-                        if (err) {
-                            console.log("There was an error in the db.updateLocatioin call in serverjs line 71: " + err);
-                            return;
-                        }
-                        db.getUser(tweet.user.screen_name, function (err, user) {
-                            if (err) {
-                                console.log("There was an error in the db.getUser call in serverjs line 78: " + err);
-                                return;
-                            }
-                            twitter.post({ in_reply_to_status_id: tweet.id_str, status: '@' + tweet.user.screen_name + ' ' + locations[user.location.area][user.location.level].message }, function (err, reply) {
-                                if (err) { console.log("There was an error in posting."); return; }
-                                db.updateLog(tweet, reply);
-                            });
-                        });
-                    });
-                }); 
-            } else {
-                //respond to user with instructions on starting a game
-                twitter.post({ in_reply_to_status_id: tweet.id_str, status: '@' + tweet.user.screen_name + ' It doesn\'t appear you have a game yet. Reply with START GAME to begin!' }, function (err, reply) {
-                    if (err) { console.log("There was an error in posting."); return; }
-                    db.updateLog(tweet, reply);
-                });
-            }
-        });
-    } else {
-        console.log('Something happened, but we don\'t care about it.');
-    }
-});
+twitter.startClient();
 
 // Start the HTTP server
 http.createServer(app).listen(port, function(err) {
