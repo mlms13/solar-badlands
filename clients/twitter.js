@@ -49,7 +49,6 @@ module.exports.startClient = function () {
                             // TODO: tweet them that there was an error and if they're really upset to bother michael
                             return;
                         }
-                        console.log(user);
                         // update user's location
                             // if no error, callback will include tweeting location.look to user
                         db.updateLocation(tweet.user.screen_name, { area: "earth", level: "room" }, function (err, saved) {
@@ -78,8 +77,6 @@ module.exports.startClient = function () {
                     });
                 }
             });
-        } else {
-            console.log('Something happened, but we don\'t care about it.');
         }
     });
 }
