@@ -1,35 +1,4 @@
 var db = require('../modules/db.js');
-var locations = require('../modules/locations.js');
-
-// public function to receive message (and respond appropriately)
-module.exports.sendInput = function (username, input, cb) {
-    db.getUser(username, function (err, user) {
-        if (err) { cb(err); return; }
-        if (user) {
-            // TODO: game parse input
-            console.log("We should figure out what the user said and respond accordingly.");
-            cb(null, "We found you, but we have no idea what to do next.");
-        } else if (input.toLowerCase().indexOf("start") > -1 && input.toLowerCase().indexOf("game") > -1) {
-            db.createUser(username, function (err, user) {
-                if (err) { cb(err); return; }
-                // update user's location
-                db.updateLocation(username, { area: "earth", level: "room" }, function (err, saved) {
-                    if (err) { cb(err); return; }
-
-                    db.getUser(username, function (err, user) {
-                        if (err) { cb(err); return; }
-                        // if no error, callback will include tweeting location.look to user
-                        cb(null, locations[user.location.area][user.location.level].message);
-                    });                        
-                });
-            }); 
-        } else {
-            console.log("The user isn't in the db, and didn't say something useful.");
-            //respond to user with instructions on starting a game
-            cb(null, "It doesn't appear you have a game yet. Reply with START GAME to begin!");
-        }
-    });
-};
 
 // synonyms for global actions
 var globalActions = {
@@ -129,6 +98,35 @@ var parseForActions = function (loc, tweet, callback) {
     callback && callback(undefined, firstAction);
 };
 
+// public function to receive message (and respond appropriately)
+module.exports.sendInput = function (username, input, cb) {
+    db.getUser(username, function (err, user) {
+        if (err) { cb(err); return; }
+        if (user) {
+            // TODO: game parse input
+            console.log("We should figure out what the user said and respond accordingly.");
+            cb(null, "We found you, but we have no idea what to do next.");
+        } else if (input.toLowerCase().indexOf("start") > -1 && input.toLowerCase().indexOf("game") > -1) {
+            db.createUser(username, function (err, user) {
+                if (err) { cb(err); return; }
+                // update user's location
+                db.updateLocation(username, { area: "earth", level: "room" }, function (err, saved) {
+                    if (err) { cb(err); return; }
+
+                    db.getUser(username, function (err, user) {
+                        if (err) { cb(err); return; }
+                        // if no error, callback will include tweeting location.look to user
+                        cb(null, locations[user.location.area][user.location.level].message);
+                    });                        
+                });
+            }); 
+        } else {
+            console.log("The user isn't in the db, and didn't say something useful.");
+            //respond to user with instructions on starting a game
+            cb(null, "It doesn't appear you have a game yet. Reply with START GAME to begin!");
+        }
+    });
+};
 
 
 // a simple test location
