@@ -44,6 +44,7 @@ app.get('/user/:handle', user.show);
 // Handle incoming tweets
 twitter.stream.on('tweet', function (tweet) {
     if (tweet.text.indexOf(config.ourHandle) === 0) {
+
         console.log(tweet.user.screen_name + " said: " + tweet.text.replace(config.ourHandle, ''));
 
         db.getUser(tweet.user.screen_name, function (err, user) {
@@ -73,14 +74,13 @@ twitter.stream.on('tweet', function (tweet) {
                         console.log(saved);
                         console.log("you now have a freakin location!");
                     });
-                    db.updateLog(tweet);
-                    // call
                 }); 
             } else {
                 //respond to user with instructions on starting a game
-                twitter.post({ in_reply_to_status_id: tweet.id_str, status: '@' + tweet.user.screen_name + ' It doesn\'t appear you\'ve started a game yet.  Reply with START GAME in order to begin!' });
-                db.updateLog(tweet);
-                console.log("START GAME to start a freakin game, man.");
+                twitter.post({ in_reply_to_status_id: tweet.id_str, status: '@' + tweet.user.screen_name + ' It doesn\'t appear you\'ve sti have to change the end of this so it doesn you know' }, function (err, reply) {
+                    if (err) { console.log("There was an error in posting."); return; }
+                    db.updateLog(tweet, reply);
+                });
             }
         });
 

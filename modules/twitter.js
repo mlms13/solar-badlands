@@ -11,13 +11,15 @@ var T = new Twit({
 module.exports.stream = T.stream('user', {'with': 'user'});
 
 
-module.exports.post = function (replyMessage) {
+module.exports.post = function (replyMessage, callback) {
     T.post('statuses/update', replyMessage, function (err, reply) {
         if (err) {
             console.log('Error in Twitter.js attempting to post message');
             console.log(err);
             return;
         }
+
+        callback(err, reply);
 
         console.log('Message posted. Check Twitter for proof.');
     });

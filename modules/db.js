@@ -28,10 +28,10 @@ module.exports.updateLocation = function (userStr, location, callback) {
     });
 };
 
-module.exports.updateLog = function (input) {
+module.exports.updateLog = function (input, response) {
     db.log.update(
         { handle: input.user.screen_name },
-        { $push: { history: input.text } },
+        { $push: { history: { time: new Date(), tweet: input.text, response: response } } },
         { upsert: true }
     );
 };
