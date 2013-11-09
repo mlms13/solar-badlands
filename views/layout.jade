@@ -1,8 +1,27 @@
 doctype 5
 html
-  head
-    title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
-  body
-    block content
-    iframe(src="http://nodeknockout.com/iframe/polar-badlands", frameborder="0", scrolling="no", allowtransparency="true", width="115", height="25")
+    head
+        title= title
+        link(rel='stylesheet', href='/stylesheets/bootstrap.css')
+        link(rel='stylesheet', href='/stylesheets/style.css')
+    body
+        header.navbar.navbar-inverse.navbar-fixed-top(role='banner')
+            div.container
+                div.navbar-header
+                    button.navbar-toggle(data-toggle="collapse", data-target="#sb-topnav")
+                        span.sr-only Toggle navigation
+                        span.icon-bar
+                        span.icon-bar
+                        span.icon-bar
+                    a.navbar-brand(href="/") Solar Badlands
+
+                div.collapse.navbar-collapse#sb-topnav
+                    ul.nav.navbar-nav.navbar-right
+                        li
+                            a(href="/") Home
+                        li
+                            a(href="/about") About
+        block content
+        iframe(src="http://nodeknockout.com/iframe/polar-badlands", frameborder="0", scrolling="no", allowtransparency="true", width="115", height="25")
+        script(src='//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js')
+        script(src='/javascripts/bootstrap.js')
