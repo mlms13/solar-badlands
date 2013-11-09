@@ -32,6 +32,28 @@ app.get('/', routes.index);
 twitter.stream.on('tweet', function (tweet) {
   if (tweet.text.indexOf("@solarbadlands") === 0) {
     console.log(tweet.user.screen_name + " said: " + tweet.text.replace('@solarbadlands', ''));
+
+    db.getUser(tweet.user.screen_name, function (err, user) {
+      if (err) {
+        console.log("There was an error in the db.getUser call in serverjs line 38: " + err);
+      } else {
+        if (!user) {
+          db.createUser(tweet.user.screen_name, function (err, user) {
+            if (err) {
+              console.log("There was an error in the db.createUser call in serverjs line 43: " + err);
+            } else {
+              console.log(user);
+              // this is where we will update the new users location
+            }
+          });
+        } else { console.log("this user exists"); }
+      }
+    });
+
+    // report current status to the user son
+
+  } else if (tweet.text.indexOf("@solarbadlands") > -1) {
+    db.updateLog(tweet);
   } else {
     console.log('Something happened, but we don\'t care about it.');
   }
