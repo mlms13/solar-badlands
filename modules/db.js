@@ -18,6 +18,16 @@ module.exports.createUser = function (userStr, callback) {
     });
 };
 
+module.exports.updateLocation = function (userStr, location, callback) {
+    db.users.update(
+        { handle: userStr },
+        { $set: { location: location } },
+        { upsert: true },
+        function (err, saved) {
+            callback(err, saved);
+    });
+};
+
 module.exports.updateLog = function (input) {
     db.log.update(
         { handle: input.user.screen_name },

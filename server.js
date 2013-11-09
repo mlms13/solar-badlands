@@ -51,8 +51,17 @@ twitter.stream.on('tweet', function (tweet) {
                     console.log(user);
                     // update user's location
                         // if no error, callback will include tweeting location.look to user
+                    db.updateLocation(tweet.user.screen_name, { area: "earth", level: "room" }, function (err, saved) {
+                        if (err) {
+                            console.log("There was an error in the db.updateLocatioin call in serverjs line 56: " + err);
+                            return;
+                        }
+                        // call location.look
+                        console.log(saved);
+                        console.log("you now have a freakin location!");
+                    });
                     db.updateLog(tweet);
-                    // call                    
+                    // call
                 }); 
             } else {
                 //respond to user with instructions on starting a game
