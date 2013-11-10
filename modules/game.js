@@ -14,7 +14,7 @@ var globalActions = {
     'inventory': {
         synonyms: ['inventory', 'show inventory', 'show items', 'items'],
         fn: function (user, callback) {
-            var itemStr;
+            var itemStr = "";
 
             user.inventory.forEach(function (item) {
                 if (item.qty > 0) {
