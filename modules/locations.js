@@ -304,14 +304,14 @@ locations.moon = {
         actions: {
             'look around': {
                 fn: function (user, text, callback) {
-                    callback(null, {text: ''});
-                }
-            },
-            '': {
-                fn: function(user, text, callback) {
-
+                    callback(null, {text: 'You can see out of the SPACESHIP DOOR. Looks nice out there. EARTH can be seen in the distance.'});
                 }
             }
+            // '': {
+            //     fn: function(user, text, callback) {
+
+            //     }
+            // }
         }
     }
 };
