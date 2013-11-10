@@ -61,10 +61,10 @@ locations.earth = {
                             if (err) { 
                                 callback(null, {text: 'You were supposed to get an item. We don\'t think you did. Sorry about your luck.'});
                             }
-                            else if (saved === 2) {
+                            else if (saved) {
                                 callback(null, {text: 'You got a SANDWICH and JUICE BOX from MOM. USE these when your health gets low. They have been added to your INVENTORY.'});
                             } else {
-                                callback(null, {text: 'Your INVENTORY was modified. Type STATUS to view it.'});
+                                callback(null, {text: 'Your INVENTORY was modified. Type INVENTORY to view it.'});
                             }
                         });
                     }
@@ -269,20 +269,20 @@ locations.moon = {
         actions: {
             'look around': {
                 fn: function (user, text, callback) {
-                    callback(null, {text: 'Looks like you\'ve landed on the moon. The door behind you '});
+                    callback(null, {text: 'Looks like you\'ve landed on the moon. The door behind you is still shut but there is a LEVER next to it.'});
                 }
             },
             'pull': {
                 synonyms: ['pull'],
                 fn: function (user, text, callback) {
                     if (text.indexOf('lever') > -1) {
-                        db.userHasItem(user.handle, 'spacesuit', function (err, itemExists)) {
+                        db.userHasItem(user.handle, 'spacesuit', function (err, itemExists) {
                             if (itemExists) {
                                 callback({area: 'moon', level: 'spaceshipOpen'});
                             } else {
                                 callback(null, {text: 'The DOOR slides open and YOU DIE IMMEDIATELY. Okay, you don\'t. Is there something in here that will prevent that?'});
                             }
-                        }
+                        });
                     } else {
                         callback(null, {text: 'There is only one thing here you can pull, currently. This wasn\'t it...'});
                     }
