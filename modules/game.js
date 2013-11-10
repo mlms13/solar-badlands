@@ -106,14 +106,15 @@ module.exports.sendInput = function (username, input, cb) {
         if (err) { cb(err); return; }
         if (user) {
             // TODO: game parse input
-            parseForActions(user.location.level, input, function (err, action, input) {
+            parseForActions(locations[user.location.area][user.location.level], input, function (err, action, input) {
                 if (err) { cb(err); return; }
                 if (!action) {
                     cb(null, "Sorry, we didn't understand what you were trying to say.  Reply with HELP if you need HELP.");
                 } else if (action.isGlobal) {
+                    // TODO, need to respond here after global is set up
                     globalActions[action.action].fn(user);
                 } else {
-                    locations[user.location.area][user.location.level][action.action].fn(user, input, function (location,  response) {
+                    locations[user.location.area][user.location.level].actions[action.action].fn(user, input, function (location,  response) {
                         if (location) {
                             db.updateLocation(username, location, function (err, saved) {
                                 if (err) { cb(err); return; }
@@ -130,8 +131,6 @@ module.exports.sendInput = function (username, input, cb) {
                     });
                 }
             });
-
-            cb(null, "We found you, but we have no idea what to do next.");
         } else if (input.toLowerCase().indexOf("start") > -1 && input.toLowerCase().indexOf("game") > -1) {
             db.createUser(username, function (err, user) {
                 if (err) { cb(err); return; }
