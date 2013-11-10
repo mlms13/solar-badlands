@@ -3,10 +3,13 @@
 @import "bootstrap";
 @import "fonts";
 
+html,
+body {
+    height: 100%;
+}
+
 body {
     background: #eee;
-    display: flex;
-    flex-flow: column;
     padding-top: 56px; // to accomodate our 56px fixed menu at the top
 }
 img {
@@ -47,8 +50,15 @@ img {
     text-align: center;
 }
 
+// page content
+.whole-page {
+    display: -webkit-flex;
+    -webkit-flex-flow: column;
+    min-height: 100%;
+}
+
 .main-content {
-    flex: auto;
+    -webkit-flex: auto;
 }
 .home-content {
     .container {

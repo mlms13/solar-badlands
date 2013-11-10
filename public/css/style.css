@@ -1001,7 +1001,8 @@ th.hidden-lg,td.hidden-lg{display:table-cell !important}
 .icon-cog:before{content:"\e60e"}
 .icon-home:before{content:"\e60f"}
 .icon-saturn:before{content:"\e610"}
-body{background:#eee;display:flex;flex-flow:column;padding-top:56px}
+html,body{height:100%}
+body{background:#eee;padding-top:56px}
 img{max-width:100%}
 .navbar-brand{font-size:28px;line-height:56px;padding:0}
 .navbar-nav>li>a{font-size:16px;line-height:26px}
@@ -1009,7 +1010,8 @@ img{max-width:100%}
 .logo{border-radius:5px;float:left;height:50px;margin:3px 12px 3px 0;width:50px}@media (max-width:500px){.logo{display:none}}
 .block-center{margin:0 auto}
 .align-center{text-align:center}
-.main-content{flex:auto}
+.whole-page{display:-webkit-flex;-webkit-flex-flow:column;min-height:100%}
+.main-content{-webkit-flex:auto}
 .home-content .container{max-width:390px}
 .help-content .container{max-width:600px}
 .about-content .container{max-width:600px}@media (max-width:1000px){.about-content .container{max-width:450px}}
