@@ -11,7 +11,7 @@ var globalActions = {
             db.resetUser();
             callback(null, {text: 'Everything is gone. Say START GAME to start over.'});
         }
-    }
+    },
     'start game' : {
         synonyms: ['start game', 'start my game', 'start the game', 'start a game'],
         fn: function (user, callback) {
