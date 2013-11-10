@@ -37,7 +37,8 @@ module.exports.createUser = function (userStr, callback) {
                 hp: 20,
                 off: 10,
                 def: 10
-            }
+            },
+            inventory: []
         }, function (err, saved) {
             if (err) {
                 console.log("There was an error in the db.createUser call: " + err);
@@ -74,6 +75,25 @@ module.exports.updateLocation = function (userStr, location, callback) {
         }
     );
 };
+
+module.exports.userHasItem = function (userStr, item, callback) {
+    db.getUser(userStr, function (err, user) {
+        var i = 0, itemExists = false;
+
+        if (err) {
+            console.error("There was an error in userHasItem: " + err);
+        }
+
+        for (i = 0; i < user.inventory.length; i += 1) {
+            if (user.inventory[i].name === item.name) {
+                itemExists = true;
+                break;
+            }
+        }
+
+        callback(null, itemExists);
+    });
+}
 
 module.exports.updateLog = function (input, response) {
     db.log.update(
