@@ -36,7 +36,7 @@ var commonLocationActions = {
     'get'       : ['get', 'take', 'pick up'],
     'go'        : ['go', 'enter', 'goto'],
     'look at'   : ['look at', 'inspect', 'look', 'check out'],
-    'talk'      : ['talk', 'speak', 'say', 'chat']
+    'talk'      : ['talk', 'speak', 'say', 'chat', 'ask']
 };
 
 var getInvalidOperationMessage = function () {
