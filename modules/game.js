@@ -13,8 +13,23 @@ var globalActions = {
     },
     'inventory': {
         synonyms: ['inventory', 'show inventory', 'show items', 'items'],
-        fn: function (user) {
-            // tweet a list of the user's items
+        fn: function (user, callback) {
+            var itemStr;
+
+            user.inventory.forEach(function (item) {
+                if (item.qty > 0) {
+                    itemStr += " " + item.name.toUpperCase() + ",";
+                }
+            });
+
+            // remove the trailing comma, if it exists
+            if (itemStr) {
+                itemStr = itemStr.substring(0, itemStr.length - 1);
+                itemStr = "You have the following:" + itemStr;
+                callback(null, {text: itemStr});
+            } else {
+                callback(null, {text: "You currently have no items."});
+            }
         }
     },
     'look around': {
@@ -42,7 +57,7 @@ var globalActions = {
 var commonLocationActions = {
     'get'       : ['get', 'take', 'pick up'],
     'go'        : ['go', 'enter', 'goto'],
-    'look at'   : ['look at', 'inspect', 'look', 'check out'],
+    'look at'   : ['look at', 'inspect', 'check out'],
     'talk'      : ['talk', 'speak', 'say', 'chat', 'ask']
 };
 
