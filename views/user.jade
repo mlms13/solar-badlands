@@ -1,15 +1,20 @@
 extends layout
 
 block content
-    .container
-        h1 Activity Log
-        if error
-            .alert.alert-danger
-                button.close(type="button", data-dismiss="alert", aria-hidden="true") &times;
-                strong= error.title
-                span= " " + error.body
-        else
-            ul
-                each message in history
-                    li.incoming= message.tweet
-                    li.outgoing= message.response
+    section.main-content.user-activity
+        .container.block-center
+            h1.align-center Activity Log
+            if error
+                .alert.alert-danger
+                    button.close(type="button", data-dismiss="alert", aria-hidden="true") &times;
+                    strong= error.title
+                    span= " " + error.body
+            else
+                ul.history.unstyled
+                    each message in history
+                        li.incoming.clearfix
+                            img(src=userImage, alt="")
+                            span.message= message.tweet
+                        li.outgoing.clearfix
+                            img(src="/images/logo.jpg", alt="")
+                            span.message= message.response

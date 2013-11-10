@@ -24,6 +24,11 @@ img {
 }
 
 // custom stuff
+.unstyled {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
 .logo {
     background: #58e;
     background-image: linear-gradient(#58e, #26b);
@@ -37,7 +42,6 @@ img {
 }
 .block-center {
     margin: 0 auto;
-    max-width: 390px;
 }
 .align-center {
     text-align: center;
@@ -45,6 +49,11 @@ img {
 
 .main-content {
     flex: auto;
+}
+.home-content {
+    .container {
+        max-width: 390px;
+    }
 }
 
 // instructions
@@ -55,9 +64,78 @@ img {
     padding: 10px;
 }
 
+.user-activity {
+    background: #ddd;
+
+    .container {
+        max-width: 600px;
+    }
+}
+
+// user search form
+.user-search {
+    margin-bottom: 25px;
+}
+
+// history page
+.history {
+    img {
+        border-radius: 5px;
+        flex: 1 0 auto;
+        max-height: 48px;
+        max-width: 48px;
+    }
+
+    .message {
+        background: #fff;
+        border: 1px solid;
+        border-color: #ddd #ccc #ccc #ddd;
+        flex: 1 1 auto;
+        padding: 10px;
+        position: relative;
+
+        &:before {
+            border: 10px solid;
+            content: "";
+            position: absolute;
+        }
+    }
+
+    .incoming,
+    .outgoing {
+        display: flex;
+        margin-bottom: 15px;
+    }
+
+    .incoming {
+        .message {
+            &:before {
+                border-color: transparent transparent transparent #fff;
+                right: -20px;
+            }
+        }
+        img {
+            order: 1;
+            margin-left: 10px;
+        }
+    }
+    .outgoing {
+        .message {
+            background: #e4f2ff;
+
+            &:before {
+                border-color: transparent #e4f2ff transparent transparent;
+                left: -20px;
+            }
+        }
+        img {
+            margin-right: 10px;
+        }
+    }
+}
+
 // footer
 .page-footer {
     background: #ccc;
-    margin-top: 25px;
     padding-top: 15px;
 }
