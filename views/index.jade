@@ -7,15 +7,4 @@ block content
                 img(src="/images/exit_planet.jpg", alt="Your spaceship is leaving the planet!")
                 h1 Instructions
                 p Solar Badlands is a text-based RPG that you play on Twitter. Tweet at {check back soon} with the text "start game" to get started.
-            form.user-search(action="/", method="post")
-                h1.align-center Check Your Progress
-
-                if error
-                    .alert.alert-danger
-                        button.close(type="button", data-dismiss="alert", aria-hidden="true") &times;
-                        strong= error.title
-                        span= " " + error.body
-                .input-group.input-group-lg
-                    input.form-control(placeholder="Enter your Twitter username", name="tw-handle")
-                    span.input-group-btn
-                        button.btn.btn-success(type="button") Go
+            include user-search-form

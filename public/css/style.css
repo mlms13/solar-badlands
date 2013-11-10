@@ -1014,7 +1014,7 @@ img{max-width:100%}
 .help-content .container{max-width:600px}
 .photo-instruction-box{background:#fff;box-shadow:0 0 4px rgba(0,0,0,0.3);margin-top:15px;padding:10px}
 .user-activity{background:#ddd}.user-activity .container{max-width:600px}
-.user-search{margin-bottom:25px}
+.user-search{margin-left:auto;margin-right:auto;margin-bottom:25px;max-width:390px}
 .history img{border-radius:5px;flex:1 0 auto;max-height:48px;max-width:48px}
 .history .message{background:#fff;border:1px solid;border-color:#ddd #ccc #ccc #ddd;flex:1 1 auto;padding:10px;position:relative}.history .message:before{border:10px solid;content:"";position:absolute}
 .history .incoming,.history .outgoing{display:flex;margin-bottom:15px}

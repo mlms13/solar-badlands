@@ -39,7 +39,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Set up the basic website routes
 app.get('/', index.render);
-app.post('/', index.submit);
+app.get('/user', user.renderForm);
+app.post('/user', user.submit);
 app.get('/user/:handle', user.show);
 app.get('/help', help.render);
 

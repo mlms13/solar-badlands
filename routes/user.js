@@ -1,5 +1,28 @@
 var db = require('../modules/db.js');
 
+// GET everything for the base /user page
+exports.renderForm = function (req, res) {
+    res.render('user-search');
+};
+
+// POST to the /user page
+exports.submit = function (req, res) {
+    var handle = req.param('tw-handle');
+    handle = handle.indexOf("@") === 0 ? handle.slice(1) : handle;
+
+    db.getUser(handle, function (err, user) {
+        if (err) {
+            res.render('user-search', {error: {title: "Troubles!", body: "We had some problems connecting to the database."}});
+            return;
+        }
+        if (user) {
+            res.redirect('/user/' + handle);
+        } else {
+            res.render('user-search', {error: {title: "User not found!", body: "Are you sure the user has started a game?"}});
+        }
+    });
+};
+
 // GET all activity for the given user
 exports.show = function(req, res) {
     // get a user based on the handle in the URL
@@ -9,11 +32,7 @@ exports.show = function(req, res) {
             return;
         }
         if (!user) {
-            // TODO don't just render the index page here
-            // instead, split the user-search into its own jade file
-            // and `include` it everywhere that it would be useful.
-            // Maybe redirect to the /user page, which will have a search form as well
-            res.render('index', {error: {title: "User not found!", body: "Are you sure the user has started a game?"}});
+            res.render('user-search', {error: {title: "User not found!", body: "Are you sure the user has started a game?"}});
         } else {
             // we found a user, so let's retrieve their log
             db.getUserLog(req.params.handle, function (err, log) {
