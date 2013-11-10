@@ -14,7 +14,7 @@ var globalActions = {
         synonyms: ['look around', 'survey', 'surroundings'],
         fn: function (user, callback) {
             // tweet the default message for the current user.location
-            callback(null, locations[user.location.area][user.location.level].message);
+            callback(null, locations[user.location.area][user.location.level].actions["look around"]);
         }
     },
     'return': {
