@@ -64,7 +64,7 @@ locations.earth = {
     },
     frontyard: {
         message: {text: 'You are in the FRONTYARD. There\'s a fence to the SOUTH and a large SPACESHIP to the EAST. Wait, that wasn\'t here yesterday.'},
-        action: {
+        actions: {
             'get': {
                 fn: function (user, text, callback) {
                     callback(null, {text: 'There\'s nothing to get here. See what\'s up with that SPACESHIP over there.'});
@@ -94,7 +94,7 @@ locations.earth = {
     },
     spaceship: {
         message: {text: 'You are now inside the SPACESHIP! There are buttons on a DASHBOARD in front of you. What looks like lockers to the RIGHT.'},
-        action: {
+        actions: {
             'push': {
                 synonyms: ['push', 'push button', 'press'],
                 fn: function (user, text, callback) {
