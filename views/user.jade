@@ -1,0 +1,15 @@
+extends layout
+
+block content
+    .container
+        h1 Activity Log
+        if error
+            .alert.alert-danger
+                button.close(type="button", data-dismiss="alert", aria-hidden="true") &times;
+                strong= error.title
+                span= " " + error.body
+        else
+            ul
+                each message in history
+                    li.incoming= message.tweet
+                    li.outgoing= message.response

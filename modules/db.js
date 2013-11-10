@@ -65,3 +65,12 @@ module.exports.updateLog = function (input, response) {
         { upsert: true }
     );
 };
+
+module.exports.getUserLog = function (userStr, callback) {
+    db.log.findOne({handle: userStr}, function (err, log) {
+        if (err) {
+            console.log("There was an error in the db.getUserLog call: " + err);
+        }
+        callback(err, log);
+    });
+};
