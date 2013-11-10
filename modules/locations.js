@@ -251,7 +251,29 @@ locations.spaceshipAlpha = {
             },
             'get': {
                 fn: function (user, text, callback) {
-                    callback(null, {text: 'There\'s nothing to get here, homeslice.'});
+                    if (text.indexOf('spacesuit') > -1) {
+                        // TODO add freakin spacesuit to inventory
+                        db.userHasItem(user.handle, 'spacesuit', function (err, itemExists) {
+                            if (itemExists) {
+                                callback(null, {text: 'You already have one of these. That should be enough.'});
+                            } else {
+                                db.addInventoryItem(user.handle, [{name: 'spacesuit', qty: 1, bonus: {hp: 0, off: 0, def: 5}}], function (err, saved) {
+                                    if (err) { 
+                                        callback(null, {text: 'You were supposed to get an item. We don\'t think you did. Sorry about your luck.'});
+                                    }
+                                    else if (saved) {
+                                        callback(null, {text: 'You\'ve acquired a SPACESUIT! Looks like this baby will let you breathe in SPACE! You put it on.'});
+                                    } else {
+                                        callback(null, {text: 'Your INVENTORY might have been modified. Type STATUS to view it.'});
+                                    }
+                                });
+                            }
+                        });                        
+                    } else if (text.indexOf('safe') > -1) {
+                        callback(null, {text: 'That is waaaay too heavy to GET. Must be made out of some crazy inter-galactic element.'});
+                    } else {
+                        callback(null, {text: 'That isn\'t something to GET.'});
+                    }
                 }
             },
             'go': {
@@ -288,6 +310,33 @@ locations.moon = {
                     }
                 }
             },
+            'get': {
+                fn: function (user, text, callback) {
+                    if (text.indexOf('spacesuit') > -1) {
+                        // TODO add freakin spacesuit to inventory
+                        db.userHasItem(user.handle, 'spacesuit', function (err, itemExists) {
+                            if (itemExists) {
+                                callback(null, {text: 'You already have one of these. That should be enough.'});
+                            } else {
+                                db.addInventoryItem(user.handle, [{name: 'spacesuit', qty: 1, bonus: {hp: 0, off: 0, def: 5}}], function (err, saved) {
+                                    if (err) { 
+                                        callback(null, {text: 'You were supposed to get an item. We don\'t think you did. Sorry about your luck.'});
+                                    }
+                                    else if (saved) {
+                                        callback(null, {text: 'You\'ve acquired a SPACESUIT! Looks like this baby will let you breathe in SPACE! You put it on.'});
+                                    } else {
+                                        callback(null, {text: 'Your INVENTORY might have been modified. Type STATUS to view it.'});
+                                    }
+                                });
+                            }
+                        });                        
+                    } else if (text.indexOf('safe') > -1) {
+                        callback(null, {text: 'That is waaaay too heavy to GET. Must be made out of some crazy inter-galactic element.'});
+                    } else {
+                        callback(null, {text: 'That isn\'t something to GET.'});
+                    }
+                }
+            },
             'go': {
                 fn: function (user, text, callback) {
                     if (text.indexOf('door') > -1) {
@@ -306,12 +355,16 @@ locations.moon = {
                 fn: function (user, text, callback) {
                     callback(null, {text: 'You can see out of the SPACESHIP DOOR. Looks nice out there. EARTH can be seen in the distance.'});
                 }
+            },
+            'go': {
+                fn: function(user, text, callback) {
+                    if (text.indexOf('door') > -1) {
+                        callback({area: 'moon', level: 'surface1'});
+                    } else {
+                        callback(null, {text: 'You\'ve got to get out of this SPACESHIP before you can GO anywhere.'});
+                    }
+                }
             }
-            // '': {
-            //     fn: function(user, text, callback) {
-
-            //     }
-            // }
         }
     }
 };
