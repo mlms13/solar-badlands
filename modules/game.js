@@ -111,7 +111,7 @@ module.exports.sendInput = function (username, input, cb) {
             parseForActions(locations[user.location.area][user.location.level], input, function (err, action, input) {
                 if (err) { cb(err); return; }
                 if (!action) {
-                    cb(null, {text: "Sorry, we didn't understand what you were trying to say.  Reply with HELP if you need HELP."});
+                    cb(null, {text: "Either that is not a recognized action, or there is no use for that here. Reply with HELP if you need HELP."});
                 } else if (action.isGlobal) {
                     // TODO, need to respond here after global is set up
                     globalActions[action.action].fn(user, function (err, response) {
