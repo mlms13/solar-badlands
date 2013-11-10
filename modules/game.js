@@ -35,7 +35,7 @@ var globalActions = {
 var commonLocationActions = {
     'get'       : ['get', 'take', 'pick up'],
     'go'        : ['go', 'enter', 'goto'],
-    'look at'   : ['look at', 'inspect'],
+    'look at'   : ['look at', 'inspect', 'look', 'check out'],
     'talk'      : ['talk', 'speak', 'say', 'chat']
 };
 
