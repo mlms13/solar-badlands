@@ -24,6 +24,20 @@ module.exports.createUser = function (userStr, callback) {
     });
 };
 
+module.exports.updateUserStats = function (userStr, stats, callback) {
+    db.users.update(
+        { handle: userStr },
+        { $set: { stats: stats } },
+        { upsert: true },
+        function (err, saved) {
+            if (err) {
+                console.log("There was an error in the db.updateUserStats call: " + err);
+            }
+            callback(err, saved);
+        }
+    );
+};
+
 module.exports.updateLocation = function (userStr, location, callback) {
     db.users.update(
         { handle: userStr },
@@ -34,7 +48,8 @@ module.exports.updateLocation = function (userStr, location, callback) {
                 console.log("There was an error in the db.updateLocatioin call: " + err);
             }
             callback(err, saved);
-    });
+        }
+    );
 };
 
 module.exports.updateLog = function (input, response) {
