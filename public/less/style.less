@@ -5,6 +5,8 @@
 
 body {
     background: #eee;
+    display: flex;
+    flex-flow: column;
     padding-top: 56px; // to accomodate our 56px fixed menu at the top
 }
 img {
@@ -41,10 +43,21 @@ img {
     text-align: center;
 }
 
+.main-content {
+    flex: auto;
+}
+
 // instructions
 .photo-instruction-box {
     background: #fff;
     box-shadow: 0 0 4px rgba(0,0,0,0.3);
     margin-top: 15px;
     padding: 10px;
+}
+
+// footer
+.page-footer {
+    background: #ccc;
+    margin-top: 25px;
+    padding-top: 15px;
 }

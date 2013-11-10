@@ -5,7 +5,7 @@ html
         link(rel='stylesheet', href='/css/style.css')
     body
         header.navbar.navbar-inverse.navbar-fixed-top(role='banner')
-            div.container
+            .container
                 div.navbar-header
                     button.navbar-toggle(data-toggle="collapse", data-target="#sb-topnav")
                         span.sr-only Toggle navigation
@@ -22,7 +22,14 @@ html
                             a(href="/") Home
                         li
                             a(href="/about") About
-        block content
-        iframe(src="http://nodeknockout.com/iframe/polar-badlands", frameborder="0", scrolling="no", allowtransparency="true", width="115", height="25")
+                        li
+                            iframe(src="http://nodeknockout.com/iframe/polar-badlands", frameborder="0", scrolling="no", allowtransparency="true", width="115", height="25")
+        section.main-content
+            block content
+        footer.page-footer
+            .container
+                h3 Vote for us?
+                p We're participating in a competition! We sure would appreciate your vote.
+                iframe(src="http://nodeknockout.com/iframe/polar-badlands", frameborder="0", scrolling="no", allowtransparency="true", width="115", height="25")
         script(src='//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js')
         script(src='/javascripts/bootstrap.js')
