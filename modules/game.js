@@ -111,7 +111,7 @@ module.exports.sendInput = function (username, input, cb) {
             parseForActions(locations[user.location.area][user.location.level], input, function (err, action, input) {
                 if (err) { cb(err); return; }
                 if (!action) {
-                    cb(null, "Sorry, we didn't understand what you were trying to say.  Reply with HELP if you need HELP.");
+                    cb(null, {text: "Sorry, we didn't understand what you were trying to say.  Reply with HELP if you need HELP."});
                 } else if (action.isGlobal) {
                     // TODO, need to respond here after global is set up
                     globalActions[action.action].fn(user, function (err, response) {
@@ -152,7 +152,7 @@ module.exports.sendInput = function (username, input, cb) {
         } else {
             console.log("The user isn't in the db, and didn't say something useful.");
             //respond to user with instructions on starting a game
-            cb(null, "It doesn't appear you have a game yet. Reply with START GAME to begin!");
+            cb(null, {name: "It doesn't appear you have a game yet. Reply with START GAME to begin!"});
         }
     });
 };

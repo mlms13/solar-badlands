@@ -2,7 +2,7 @@ var locations = {};
 
 locations.earth = {
     room : {
-        message: "You wake up in YOUR ROOM to a loud crash. It is a nice day out. There are some books to the WEST, and STAIRS to the SOUTH.",
+        message: {text: "You wake up in YOUR ROOM to a loud crash. It is a nice day out. There are some books to the WEST, and STAIRS to the SOUTH."},
         actions: {
             'get': {
                 fn: function (user, text, callback) {
@@ -15,7 +15,7 @@ locations.earth = {
             },
             'go': {
                 fn: function (user, text, callback) {
-                    if (text.toLowerCase().indexOf('stairs') > -1) {
+                    if (text.toLowerCase().indexOf('stairs') > -1 || text.toLowerCase().indexOf('south') > -1) {
                         callback({ area: 'earth', level: 'downstairs'});
                     } else {
                         callback(null, 'You can\'t GO there.  It either isn\'t a place, or you aren\'t where you think you are.');
@@ -25,7 +25,7 @@ locations.earth = {
         }
     },
     downstairs : {
-        message: "You are now DOWNSTAIRS. MOM is in the kitchen, there is a table with chairs to the EAST and a DOOR to the SOUTH.",
+        message: {text: "You are now DOWNSTAIRS. MOM is in the kitchen, there is a table with chairs to the EAST and a DOOR to the SOUTH."},
         actions: {
             'get': {
                 fn: function (user, text, callback) {
@@ -43,7 +43,7 @@ locations.earth = {
             },
             'go': {
                 fn: function (user, text, callback) {
-                    if (text.toLowerCase().indexOf('door') > -1) {
+                    if (text.toLowerCase().indexOf('door') > -1 || text.toLowerCase().indexOf('south') > -1) {
                         callback({area: 'earth', level: 'frontyard'});
                     } else {
                         callback(null, 'That isn\'t a real place. Or it isn\'t a fake place. Matter of perspective.');
@@ -51,6 +51,9 @@ locations.earth = {
                 }
             }
         }
+    },
+    frontyard: {
+        message: {text: "You are in the FRONTYARD"}
     }
 };
 

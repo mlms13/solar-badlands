@@ -30,11 +30,11 @@ module.exports.startClient = function () {
             console.log(tweet.user.screen_name + " said: " + tweet.text.replace(config.ourHandle, ''));
             game.sendInput(tweet.user.screen_name, tweet.text, function (err, response) {
                 if (err) {
-                    response = "Looks like we're having some problems. Try again in a bit, or tweet at @mlms13 for support.";
+                    response = {name: "Looks like we're having some problems. Try again in a bit, or tweet at @mlms13 for support."};
                 }
 
                 // send `response` to user
-                postMessage({ in_reply_to_status_id: tweet.id_str, status: '@' + tweet.user.screen_name + ' ' + response }, function (err, reply) {
+                postMessage({ in_reply_to_status_id: tweet.id_str, status: '@' + tweet.user.screen_name + ' ' + response.text }, function (err, reply) {
                     if (err) { return; }
 
                     // on success, save their message and our response in the db
