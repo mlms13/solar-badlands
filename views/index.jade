@@ -13,4 +13,7 @@ block content
                 button.close(type="button", data-dismiss="alert", aria-hidden="true") &times;
                 strong= error.title
                 span= " " + error.body
-        input.form-control(placeholder="Enter your Twitter username", name="tw-handle")
+        .input-group.input-group-lg
+            input.form-control(placeholder="Enter your Twitter username", name="tw-handle")
+            span.input-group-btn
+                button.btn.btn-success(type="button") Go
