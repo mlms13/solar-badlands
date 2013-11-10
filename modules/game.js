@@ -1,5 +1,6 @@
-var db = require('../modules/db.js');
+var db = require('./db.js');
 var config = require('../config.js');
+var locations = require('./locations.js');
 
 // synonyms for global actions
 var globalActions = {
@@ -96,7 +97,7 @@ var parseForActions = function (loc, input, callback) {
     firstAction = firstAction.action ? firstAction : null;
 
     // pass an error (currently undefined), 
-    callback && callback(undefined, firstAction, input);
+    callback(undefined, firstAction, input);
 };
 
 // public function to receive message (and respond appropriately)
@@ -107,7 +108,9 @@ module.exports.sendInput = function (username, input, cb) {
             // TODO: game parse input
             parseForActions(user.location.level, input, function (err, action, input) {
                 if (err) { cb(err); return; }
-                if (action.isGlobal) {
+                if (!action) {
+                    cb(null, "Sorry, we didn't understand what you were trying to say.  Reply with HELP if you need HELP.");
+                } else if (action.isGlobal) {
                     globalActions[action.action].fn(user);
                 } else {
                     locations[user.location.area][user.location.level][action.action].fn(user, input, function (location,  response) {
