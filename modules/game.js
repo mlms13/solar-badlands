@@ -4,6 +4,14 @@ var locations = require('./locations.js');
 
 // synonyms for global actions
 var globalActions = {
+    'start game' : {
+        synonyms: ['start game', 'start my game', 'start the game', 'start a game'],
+        fn: function (user, callback) {
+            if (user) {
+                callback(null, {text: "Looks like you've already started a game. Maybe try something else?"});
+            }
+        }
+    },
     'help' : {
         synonyms: ['help', "i'm stuck", 'im stuck', 'confused'],
         fn: function (user, callback) {
