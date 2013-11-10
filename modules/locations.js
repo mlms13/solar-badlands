@@ -57,12 +57,11 @@ locations.earth = {
                 fn: function (user, text, callback) {
                     if (text.indexOf('mom') > -1) {
                         // TODO update freakin inventory
-                        db.addInventoryItem(user.handle, [{name: 'sandwich', qty: 1, bonus: {hp: 10, off: 0, def: 0}}, {name: 'juice box', qty: 1, bonus: {hp: 5, off: 0, def: 0}}], function (err, saved) {
+                        db.addInventoryItem(user.handle, [{name: 'sandwich', qty: 1, bonus: {hp: 10, off: 0, def: 0}}], function (err, saved) {
                             if (err) { 
                                 callback(null, {text: 'You were supposed to get an item. We don\'t think you did. Sorry about your luck.'});
-                            }
-                            else if (saved) {
-                                callback(null, {text: 'You got a SANDWICH and JUICE BOX from MOM. USE these when your health gets low. They have been added to your INVENTORY.'});
+                            } else if (saved) {
+                                callback(null, {text: 'You got a SANDWICH from MOM. USE these when your health gets low. They have been added to your INVENTORY.'});
                             } else {
                                 callback(null, {text: 'Your INVENTORY was modified. Type INVENTORY to view it.'});
                             }
@@ -165,11 +164,10 @@ locations.earth = {
                         db.addInventoryItem(user.handle, [{name: 'spacesuit', qty: 1, bonus: {hp: 0, off: 0, def: 5}}], function (err, saved) {
                             if (err) { 
                                 callback(null, {text: 'You were supposed to get an item. We don\'t think you did. Sorry about your luck.'});
-                            }
-                            else if (saved) {
+                            } else if (saved) {
                                 callback(null, {text: 'You\'ve acquired a SPACESUIT! Looks like this baby will let you breathe in SPACE! You put it on.'});
                             } else {
-                                callback(null, {text: 'Your INVENTORY might have been modified. Type STATUS to view it.'});
+                                callback(null, {text: 'Your INVENTORY might have been modified. Type INVENTORY to view it.'});
                             }
                         });
                     } else if (text.indexOf('safe') > -1) {
@@ -223,6 +221,8 @@ locations.spaceshipAlpha = {
                         callback(null, {text: 'The same lockers as before. That SAFE is still here, and a couple of spare SPACESUITS.'});
                     } else if (text.indexOf('door') > -1) {
                         callback(null, {text: 'This DOOR is sealed shut. There\'s a LEVER next to it, but it might not be best to PULL that out here.'});
+                    } else {
+                        callback(null, {text: 'Move along, there\'s nothing to see here.'});
                     }
                 }
             },
@@ -260,8 +260,7 @@ locations.spaceshipAlpha = {
                                 db.addInventoryItem(user.handle, [{name: 'spacesuit', qty: 1, bonus: {hp: 0, off: 0, def: 5}}], function (err, saved) {
                                     if (err) { 
                                         callback(null, {text: 'You were supposed to get an item. We don\'t think you did. Sorry about your luck.'});
-                                    }
-                                    else if (saved) {
+                                    } else if (saved) {
                                         callback(null, {text: 'You\'ve acquired a SPACESUIT! Looks like this baby will let you breathe in SPACE! You put it on.'});
                                     } else {
                                         callback(null, {text: 'Your INVENTORY might have been modified. Type STATUS to view it.'});
@@ -321,15 +320,14 @@ locations.moon = {
                                 db.addInventoryItem(user.handle, [{name: 'spacesuit', qty: 1, bonus: {hp: 0, off: 0, def: 5}}], function (err, saved) {
                                     if (err) { 
                                         callback(null, {text: 'You were supposed to get an item. We don\'t think you did. Sorry about your luck.'});
-                                    }
-                                    else if (saved) {
+                                    } else if (saved) {
                                         callback(null, {text: 'You\'ve acquired a SPACESUIT! Looks like this baby will let you breathe in SPACE! You put it on.'});
                                     } else {
                                         callback(null, {text: 'Your INVENTORY might have been modified. Type STATUS to view it.'});
                                     }
                                 });
                             }
-                        });                        
+                        });
                     } else if (text.indexOf('safe') > -1) {
                         callback(null, {text: 'That is waaaay too heavy to GET. Must be made out of some crazy inter-galactic element.'});
                     } else {
@@ -357,12 +355,307 @@ locations.moon = {
                 }
             },
             'go': {
-                fn: function(user, text, callback) {
+                fn: function (user, text, callback) {
                     if (text.indexOf('door') > -1) {
                         callback({area: 'moon', level: 'surface1'});
                     } else {
                         callback(null, {text: 'You\'ve got to get out of this SPACESHIP before you can GO anywhere.'});
                     }
+                }
+            }
+        }
+    },
+    surface1: {
+        message: {text: 'You step out onto the surface of the MOON. There is a light off in the distance to the WEST. More moon surface NORTH.'},
+        actions: {
+            'look around': {
+                fn: function (user, text, callback) {
+                    callback(null, {text: 'You are on the MOON. SPACESHIP is to the SOUTH, noise and light to the WEST, and more MOON to the NORTH and EAST.'});
+                }
+            },
+            'go': {
+                fn: function (user, text, callback) {
+                    if (text.indexOf('west') > -1) {
+                        callback({area: 'moon', level: 'surface2'});
+                    } else if (text.indexOf('south') > -1 || text.indexOf('spaceship') > -1) {
+                        callback(null, {text: 'Let\'s not leave just yet... We just got here!'});
+                    } else {
+                        callback(null, {text: 'I don\'t really see any reason to go there.  Since I\'m running the show here, I say no.'});
+                    }
+                }
+            }
+        }
+    },
+    surface2: {
+        message: {text: 'The light and noise to the WEST are more apparent. Your SPACESHIP is back EAST. Are those FOOTPRINTS heading NORTH?'},
+        actions: {
+            'look around': {
+                fn: function (user, text, callback) {
+                    callback(null, {text: 'Something is happening to the WEST, but these FOOTPRINTS are heading NORTH...'});
+                }
+            },
+            'look at': {
+                fn: function (user, text, callback) {
+                    if (text.indexOf('footprints') > -1) {
+                        callback(null, {text: 'These don\'t look like human FOOTPRINTS. They are leading to the NORTH.'});
+                    } else {
+                        callback(null, {text: 'As you might try, you can\'t really LOOK AT that. Maybe its all the space dust...'});
+                    }
+                }
+            },
+            'go': {
+                fn: function (user, text, callback) {
+                    if (text.indexOf('west') > -1) {
+                        callback({area: 'moon', level: 'surfaceCraterEdge'});
+                    } else if (text.indexOf('north') > -1) {
+                        callback({area: 'moon', level: 'moonMountain'});
+                    } else {
+                        callback(null, {text: 'Do you not have the hang of this by now? Try going SOMEWHERE ELSE.'});
+                    }
+                }
+            }
+        }
+    },
+    // this is where it will jump around a bit
+    moonMountain: {
+        message: {text: 'You follow the FOOTPRINTS. They lead you to the base of MOON MOUNTAIN. There looks like an ENTRANCE to the EAST.'},
+        actions: {
+            'look around': {
+                fn: function (user, text, callback) {
+                    callback(null, {text: 'You are at the base of MOON MOUNTAIN. Awesome. There is an ENTRANCE to the EAST.'});
+                }
+            },
+            'go': {
+                fn: function (user, text, callback) {
+                    if (text.indexOf('east') > -1 || text.indexOf('entrance') > -1) {
+                        callback({area: 'moon', level: 'innerMoonMountain'});
+                    } else {
+                        callback(null, {text: 'That isn\'t a place that you can GO right now. Can you think of a more obvious location?'});
+                    }
+                }
+            }
+        }
+    },
+    innerMoonMountain: {
+        message: {text: 'You walk into MOON MOUNTAIN. There is a rumble and the ENTRANCE is sealed by MOON ROCKS! You are in some sort of arena.'},
+        actions: {
+            'look around': {
+                fn: function (user, text, callback) {
+                    callback(null, {text: 'It looks like a battle took place here recently. Blood, guts, and dust cover the ground. A SHINY OBJECT is exposed.'});
+                }
+            },
+            'look at': {
+                fn: function (user, text, callback) {
+                    if (text.indexOf('object') > -1) {
+                        callback(null, {text: 'A SHINY OBJECT is half exposed in the ground. Looks like a KEY or other miscellaneous object.'});
+                    } else if (text.indexOf('guts') > -1) {
+                        callback(null, {text: 'Looks like freakin ALIEN GUTS! SIIIICCCCKKKKKK!'});
+                    } else {
+                        callback(null, {text: 'Move along now, nothing to see here.'});
+                    }
+                }
+            },
+            'get': {
+                fn: function (user, text, callback) {
+                    if (text.indexOf('key') > -1 || text.indexOf('object') > -1) {
+                        db.addInventoryItem(user.handle, [{name: 'safe key', qty: 1, bonus: {hp: 0, off: 0, def: 0}}], function (err, saved) {
+                            if (err) { 
+                                callback(null, {text: 'You were supposed to get an item. We don\'t think you did. Sorry about your luck.'});
+                            } else if (saved) {
+                                callback(null, {text: 'You\'ve acquired a SAFE KEY! Also, what luck, you see an EXIT to the EAST.'});
+                            } else {
+                                callback(null, {text: 'Your INVENTORY might have been modified. Also, what luck, you see an EXIT to the EAST.'});
+                            }
+                        });
+                    } else {
+                        callback(null, {text: 'That isn\'t something you can GET. Try GETting this game...'});
+                    }
+                }
+            },
+            'go': {
+                fn: function (user, text, callback) {
+                    if (text.indexOf('east') > -1 || text.indexOf('exit') > -1) {
+                        callback({area: 'moon', level: 'postMoonMountain'});
+                    } else {
+                        callback(null, {text: 'That isn\'t a place that you can GO right now. Did you see that EXIT through the MOON DUST?'});
+                    }
+                }
+            }
+        }
+    },
+    postMoonMountain: {
+        message: {text: 'It was a relief getting out of that MOON MOUNTAIN. A storm seems to be picking up. You see your SPACESHIP to the SOUTH.'},
+        actions: {
+            'look around': {
+                fn: function (user, text, callback) {
+                    callback(null, {text: 'Can\'t see much with this storm picking up. You can however, see your SPACESHIP back to the SOUTH.'});
+                }
+            },
+            'go': {
+                fn: function (user, text, callback) {
+                    if (text.indexOf('south') > -1 || text.indexOf('spaceship') > -1) {
+                        callback({area: 'moon', level: 'spaceshipAfterMountain'});
+                    } else {
+                        callback(null, {text: 'That isn\'t a place that you can GO right now. Did I mention you can see your SPACESHIP?'});
+                    }
+                }
+            }
+        }
+    },
+    spaceshipAfterMountain: {
+        message: {text: 'Back in the comfort of the SPACESHIP. Usual SPACESHIP stuff is around.'},
+        actions: {
+            'look around': {
+                fn: function (user, text, callback) {
+                    callback(null, {text: 'I guess you forgot... There is a DASHBOARD in front of you, LOCKERS to your RIGHT and a DOOR behind you.'});
+                }
+            },
+            'look at': {
+                fn: function (user, text, callback) {
+                    if (text.indexOf('dashboard') > -1) {
+                        callback(null, {text: 'BUTTONS all over the place. A MONITOR with KEYBOARD is here that appears to be in English... Convenient...'});
+                    } else if (text.indexOf('monitor') > -1) {
+                        callback(null, {text: 'The monitor reads: \"Last Location: Earth-Orbit, Current Location: Earth-Moon, Destination: _\". And the cursor is blinking.'});
+                    } else if (text.indexOf('keyboard') > -1) {
+                        callback(null, {text: 'Not a standard English keyboard, but there are definitely some recognizable characters here. Can you TYPE?'});
+                    } else if (text.indexOf('locker') > -1) {
+                        callback(null, {text: 'The same lockers as before. That SAFE is still here, and a couple of spare SPACESUITS.'});
+                    } else if (text.indexOf('door') > -1) {
+                        callback(null, {text: 'This DOOR is shut. There\'s a MOON out there...'});
+                    } else {
+                        callback(null, {text: 'Move along, there\'s nothing to see here.'});
+                    }
+                }
+            },
+            'open': {
+                synonyms: ['open', 'unlock'],,
+                fn: function (user, text, callback) {
+                    if (text.indexOf('safe') > -1) {
+                        db.addInventoryItem(user.handle, [{name: 'sword', qty: 1, bonus: {hp: 0, off: 50, def: 0}}], function (err, saved) {
+                            if (err) { 
+                                callback(null, {text: 'You were supposed to get an item. We don\'t think you did. Sorry about your luck.'});
+                            } else {
+                                callback(null, {text: 'The SAFE swings open revealing THE SWORD OF THE UNIVERSE! You are now weilding it!'});
+                            }
+                        });
+                    } else {
+                        callback(null, {text: 'That isn\'t something you can OPEN. Sorry.'});
+                    }
+                }
+            },
+            'type': {
+                synonyms: ['type'],
+                fn: function (user, text, callback) {
+                    if (text.indexOf('earth') > -1) {
+                        callback(null, {text: 'It\'s trying, But nothing happens. The MONITOR reads: \"Ship needs FLUX CAPACITOR to go there.\" Better go exploring.'});
+                    } else {
+                        callback(null, {text: 'The SPACESHIP didn\'t seem to recognize that input.'});
+                    }
+                }
+            },
+            'go': {
+                fn: function (user, text, callback) {
+                    if (text.indexOf('door') > -1) {
+                        callback({area: 'moon', level: 'surface3'});
+                    } else {
+                        callback(null, 'You shall not pass.');
+                    }
+                }
+            }
+        }
+    },
+    surface3: {
+        message: {text: 'Back on the MOON. Noise and Light still to the WEST.'},
+        actions: {
+            'look around': {
+                fn: function (user, text, callback) {
+                    callback(null, {text: 'You are on the MOON. SPACESHIP is to the SOUTH, noise and light to the WEST, and more MOON to the NORTH and EAST.'});
+                }
+            },
+            'go': {
+                fn: function (user, text, callback) {
+                    if (text.indexOf('west') > -1) {
+                        callback({area: 'moon', level: 'surfaceCraterEdge'});
+                    } else {
+                        callback(null, {text: 'I don\'t really see any reason to go there.  Since I\'m running the show here, I say no.'});
+                    }
+                }
+            }
+        }
+    },
+    surfaceCraterEdge: {
+        message: {text: 'You come to the edge of a crater. There is a large MOON MONSTER at the BOTTOM. He seems to be guarding a large metal object.'},
+        actions: {
+            'look around': {
+                fn: function (user, text, callback) {
+                    callback(null, {text: 'That MOON MONSTER must have been responsible for all that noise and light. He is SOUTH to the BOTTOM of the crater.'});
+                }
+            },
+            'go': {
+                fn: function (user, text, callback) {
+                    if (text.indexOf('bottom') > -1 || text.indexOf('south') > -1) {
+                        callback({area: 'moon', level: 'craterBottom'});
+                    } else {
+                        callback(null, {text: 'That isn\'t a real place. Or it isn\'t a fake place. Matter of perspective.'});
+                    }
+                }
+            }
+        }
+    },
+    craterBottom: {
+        message: {text: 'You get to the BOTTOM of the crater. The MOON MONSTER is staring you down. He is huge and ugly and upset about something.'},
+        actions: {
+            'look around': {
+                fn: function (user, text, callback) {
+                    callback(null, {text: 'MOON MONSTER is in front of you. That is a FLUX CAPACITOR he is guarding. You\'ll need that to get home.'});
+                }
+            },
+            'fight': {
+                synonyms: ['fight', 'attack', 'kill', 'engage'],
+                fn: function (user, text, callback) {
+                    if (text.indexOf('monster') > -1) {
+                        db.userHasItem(user.handle, 'sword', function (err, itemExists) {
+                            if (itemExists) {
+                                db.addInventoryItem(user.handle, [{name: 'flux', qty: 1, bonus: {hp: 0, off: 50, def: 0}}], function (err, saved) {
+                                    if (err) { 
+                                        callback(null, {text: 'You were supposed to get an item. We don\'t think you did. Sorry about your luck.'});
+                                    } else {
+                                        callback(null, {text: 'You sliced the MONSTER in half with the SWORD OF THE UNIVERSE! You got the FLUX CAPACITOR! SPACESHIP will take you home!'});
+                                    }
+                                });
+                            } else {
+                                callback({area: 'moon', level: 'dead'});
+                            }
+                        }
+                    } else {
+                        callback(null, {text: 'You can\'t fight whatever it is you\'re trying to fight you freakin hothead.'});
+                    }
+                }
+            },
+            'spaceship': {
+                synonyms: ['spaceship'],
+                fn: function (user, text, callback) {
+                    callback({area: 'moon', level: 'endgame'});
+                }
+            }
+        }
+    },
+    dead: {
+        message: {text: 'You died because you didn\'t have any weapon to fight the MOON MONSTER with. Type GO to go back and correct your errors.'},
+        actions: {
+            'go': {
+                fn: function (user, text, callback) {
+                    callback({area: 'moon', level: 'surface2'});
+                }
+            }
+        }
+    },
+    endgame: {
+        message: {text: 'The SWORD OF THE UNIVERSE teleports you back to the SPACESHIP. This thing is headed home. Thanks for playing!'},
+        actions: {
+            'look around': {
+                fn: function (user, text, callback) {
+                    callback(null, {text: 'You look like a champion. Check out http://polar-badlands.2013.nodeknockout.com if you had a good time!'});
                 }
             }
         }
