@@ -11,7 +11,7 @@ var T = new Twit({
 var collections = ["users", "log"];
 var db = require("mongojs").connect(config.mongohq_uri, collections);
 
-module.exports.getUser = function (userStr, callback) {
+var getUser = module.exports.getUser = function (userStr, callback) {
     db.users.findOne({handle: userStr}, function (err, user) {
         if (err) {
             console.log("There was an error in the db.getUser call: " + err);
@@ -76,8 +76,8 @@ module.exports.updateLocation = function (userStr, location, callback) {
     );
 };
 
-module.exports.userHasItem = function (userStr, item, callback) {
-    db.getUser(userStr, function (err, user) {
+module.exports.userHasItem = function (userStr, itemName, callback) {
+    getUser(userStr, function (err, user) {
         var i = 0, itemExists = false;
 
         if (err) {
@@ -85,7 +85,7 @@ module.exports.userHasItem = function (userStr, item, callback) {
         }
 
         for (i = 0; i < user.inventory.length; i += 1) {
-            if (user.inventory[i].name === item.name) {
+            if (user.inventory[i].name === itemName) {
                 itemExists = true;
                 break;
             }
@@ -93,7 +93,58 @@ module.exports.userHasItem = function (userStr, item, callback) {
 
         callback(null, itemExists);
     });
-}
+};
+
+var updateInventory = module.exports.updateInventory = function (userStr, inventory, callback) {
+    db.users.update(
+        { handle: userStr },
+        { $set: { inventory: inventory } },
+        { upsert: true },
+        function (err, saved) {
+            if (err) {
+                console.log("There was an error in the db.updateInventory call: " + err);
+            }
+            callback(err, saved);
+        }
+    );
+};
+
+module.exports.addInventoryItem = function (userStr, item, callback) {
+    db.users.update(
+        { handle: userStr },
+        { $push: { inventory: { $each: item } } },
+        { upsert: true },
+        function (err, saved) {
+            if (err) {
+                console.log("There was an error in the db.addInventoryItem call: " + err);
+            }
+            callback(err, saved);
+        }
+    );
+};
+
+module.exports.removeInventoryItem = function (userStr, item, callback) {
+    getUser(userStr, function (err, user) {
+        var i = 0, newInventory = user.inventory;
+
+        if (err) {
+            console.error("There was an error in removeInventoryItem: " + err);
+        }
+
+        for (i = 0; i < user.inventory.length; i += 1) {
+            if (newInventory[i].name === item.name) {
+                newInventory[i].qty =- 1;
+                updateInventory(userStr, newInventory, function (err, saved) {
+                    callback(err, saved);
+                });
+                break;
+            }
+        }
+
+        // nothing was updated
+        callback(null, 0);
+    };
+};
 
 module.exports.updateLog = function (input, response) {
     db.log.update(
