@@ -35,7 +35,7 @@ var getDupeMessageString = function () {
 
     // return a random message
     return messages[Math.floor(Math.random() * messages.length)];
-}
+};
 
 var postMessage = function (replyMessage, callback) {
     T.post('statuses/update', replyMessage, function (err, reply) {
@@ -72,6 +72,8 @@ var postMessage = function (replyMessage, callback) {
 module.exports.startClient = function () {
     // Handle incoming tweets
     stream.on('tweet', function (tweet) {
+        console.log('Something happened that involves us.');
+
         if (tweet.text.indexOf(config.ourHandle) === 0) {
             console.log(tweet.user.screen_name + " said: " + tweet.text.replace(config.ourHandle, ''));
             game.sendInput(tweet.user.screen_name, tweet.text, function (err, response) {
