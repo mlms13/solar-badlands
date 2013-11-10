@@ -15,7 +15,13 @@ module.exports.getUser = function (userStr, callback) {
 module.exports.createUser = function (userStr, callback) {
     db.users.save({
         handle: userStr,
-        createdOn: new Date()
+        createdOn: new Date(),
+        stats: {
+            exp: 0,
+            hp: 20,
+            off: 10,
+            def: 10
+        }
     }, function (err, saved) {
         if (err) {
             console.log("There was an error in the db.createUser call: " + err);
