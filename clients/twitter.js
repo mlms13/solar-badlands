@@ -61,6 +61,9 @@ var postMessage = function (replyMessage, callback) {
             return;
         }
 
+        if (!callback) {
+            console.log("There is no callback. Is that a problem?");
+        }
         // call the callback and pass along the error
         callback && callback(null, reply);
     });
