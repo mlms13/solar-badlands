@@ -39,6 +39,22 @@ var commonLocationActions = {
     'talk'      : ['talk', 'speak', 'say', 'chat']
 };
 
+var getInvalidOperationMessage = function () {
+    // add a bunch of these to make Twitter less likely to complain about duplicate messages
+    var messages = [
+        "Either that is not a recognized action, or there is no use for that here. Reply with HELP if you need HELP.",
+        "I'm not quite sure what you're trying to do. Try something else, or reply with HELP if you're stuck.",
+        "I didn't understand that, but I think this one is on you for not making sense. Reply with HELP if you need it.",
+        "Whatever you are trying to do doesn't need to be done here. Reply with HELP if you're confused.",
+        "That doesn't make sense to me. If you need HELP, I'd be more than happy to give you some pointers.",
+        "Thinking outside the box? You want get far if I can't understand you. Reply with HELP if you're confused.",
+        "You seem to be confused, because that didn't make sense.  Reply with HELP if you need it.",
+        "Do you know what you're trying to do? Because I don't. Let me know if you need HELP.",
+        "I don't know what you're trying to do. If you need HELP, just say so.",
+        "Maybe try something else, because that didn't make sense.  If you need some HELP, just ask."
+    ];
+    return messages[Math.floor(Math.random() * messages.length)];
+}
 
 var getUsefulActions = function (loc) {
     var action, useful = {};
@@ -116,7 +132,7 @@ module.exports.sendInput = function (username, input, cb) {
             parseForActions(userLocation, input, function (err, action, cleanInput) {
                 if (err) { cb(err); return; }
                 if (!action) {
-                    cb(null, {text: "Either that is not a recognized action, or there is no use for that here. Reply with HELP if you need HELP."});
+                    cb(null, {text: getInvalidOperationMessage()});
                 } else if (action.isGlobal) {
                     // TODO, need to respond here after global is set up
                     globalActions[action.action].fn(user, function (err, response) {
