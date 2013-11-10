@@ -152,7 +152,7 @@ module.exports.sendInput = function (username, input, cb) {
         } else {
             console.log("The user isn't in the db, and didn't say something useful.");
             //respond to user with instructions on starting a game
-            cb(null, {name: "It doesn't appear you have a game yet. Reply with START GAME to begin!"});
+            cb(null, {text: "It doesn't appear you have a game yet. Reply with START GAME to begin!"});
         }
     });
 };

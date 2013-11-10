@@ -7,9 +7,9 @@ locations.earth = {
             'get': {
                 fn: function (user, text, callback) {
                     if (text.toLowerCase().indexOf('books') > -1) {
-                        callback(null, 'These sure do look interesting, but you don\'t have any use for them now.');
+                        callback(null, {text: 'These sure do look interesting, but you don\'t have any use for them now.'});
                     } else {
-                        callback(null, 'You can\'t GET that. Try doing something else, or asking for HELP.');
+                        callback(null, {text: 'You can\'t GET that. Try doing something else, or asking for HELP.'});
                     }
                 }
             },
@@ -18,7 +18,7 @@ locations.earth = {
                     if (text.toLowerCase().indexOf('stairs') > -1 || text.toLowerCase().indexOf('south') > -1) {
                         callback({ area: 'earth', level: 'downstairs'});
                     } else {
-                        callback(null, 'You can\'t GO there.  It either isn\'t a place, or you aren\'t where you think you are.');
+                        callback(null, {text: 'You can\'t GO there.  It either isn\'t a place, or you aren\'t where you think you are.'});
                     }
                 }
             }
@@ -29,7 +29,7 @@ locations.earth = {
         actions: {
             'get': {
                 fn: function (user, text, callback) {
-                    callback(null, 'There isn\'t anything to GET here. Need HELP? You just might...');
+                    callback(null, {text: 'There isn\'t anything to GET here. Need HELP? You just might...'});
                 }
             },
             'talk': {
@@ -37,7 +37,7 @@ locations.earth = {
                     if (text.toLowerCase().indexOf('mom') > -1) {
                         //update freakin inventory
 
-                        callback(null, 'You got a SANDWICH, and JUICE BOX from MOM. USE these when your health gets low. They have been added to your INVENTORY.');
+                        callback(null, {text: 'You got a SANDWICH, and JUICE BOX from MOM. USE these when your health gets low. They have been added to your INVENTORY.'});
                     }
                 }
             },
@@ -46,7 +46,7 @@ locations.earth = {
                     if (text.toLowerCase().indexOf('door') > -1 || text.toLowerCase().indexOf('south') > -1) {
                         callback({area: 'earth', level: 'frontyard'});
                     } else {
-                        callback(null, 'That isn\'t a real place. Or it isn\'t a fake place. Matter of perspective.');
+                        callback(null, {text: 'That isn\'t a real place. Or it isn\'t a fake place. Matter of perspective.'});
                     }
                 }
             }
