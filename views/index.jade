@@ -3,6 +3,10 @@ extends layout
 block content
     section.main-content.home-content
         .container.block-center
+            .alert.alert-warning
+                button.close(type='button', data-dismiss='alert', aria-hidden='true') &times;
+                strong Please be patient!
+                span= " The Twitter streaming API is inconsistent today, so it might take a little while to get responses from the bot."
             .photo-instruction-box
                 img(src="/images/exit_planet.jpg", alt="Your spaceship is leaving the planet!")
                 h1 Instructions
