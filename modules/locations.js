@@ -6,7 +6,7 @@ locations.earth = {
         actions: {
             'get': {
                 fn: function (user, text, callback) {
-                    if (text.toLowerCase().indexOf('books') > -1) {
+                    if (text.indexOf('books') > -1) {
                         callback(null, {text: 'These sure do look interesting, but you don\'t have any use for them now.'});
                     } else {
                         callback(null, {text: 'You can\'t GET that. Try doing something else, or asking for HELP.'});
@@ -20,7 +20,7 @@ locations.earth = {
             },
             'go': {
                 fn: function (user, text, callback) {
-                    if (text.toLowerCase().indexOf('stairs') > -1 || text.toLowerCase().indexOf('south') > -1) {
+                    if (text.indexOf('stairs') > -1 || text.indexOf('south') > -1) {
                         callback({ area: 'earth', level: 'downstairs'});
                     } else {
                         callback(null, {text: 'You can\'t GO there.  It either isn\'t a place, or you aren\'t where you think you are.'});
@@ -44,8 +44,8 @@ locations.earth = {
             },
             'talk': {
                 fn: function (user, text, callback) {
-                    if (text.toLowerCase().indexOf('mom') > -1) {
-                        //update freakin inventory
+                    if (text.indexOf('mom') > -1) {
+                        // TODO update freakin inventory
 
                         callback(null, {text: 'You got a SANDWICH, and JUICE BOX from MOM. USE these when your health gets low. They have been added to your INVENTORY.'});
                     }
@@ -53,7 +53,7 @@ locations.earth = {
             },
             'go': {
                 fn: function (user, text, callback) {
-                    if (text.toLowerCase().indexOf('door') > -1 || text.toLowerCase().indexOf('south') > -1) {
+                    if (text.indexOf('door') > -1 || text.indexOf('south') > -1) {
                         callback({area: 'earth', level: 'frontyard'});
                     } else {
                         callback(null, {text: 'That isn\'t a real place. Or it isn\'t a fake place. Matter of perspective.'});
@@ -72,7 +72,7 @@ locations.earth = {
             },
             'look at': {
                 fn: function (user, text, callback) {
-                    if (text.toLowerCase().indexOf('spaceship') > -1) {
+                    if (text.indexOf('spaceship') > -1) {
                         callback(null, {text: 'Large, metal, looks like a nice SPACESHIP. I wonder if there\'s anything inside?'});
                     } else {
                         callback(null, {text: 'You try to look, but the SPACESHIP steals your gaze... Oooohhh... SPACESHIP....'});
@@ -81,9 +81,9 @@ locations.earth = {
             },
             'go': {
                 fn: function (user, text, callback) {
-                    if (text.toLowerCase().indexOf('spaceship') > -1) {
+                    if (text.indexOf('spaceship') > -1) {
                         callback({area: 'earth', level: 'spaceship'});
-                    } else if (text.toLowerCase().indexOf('east') > -1) {
+                    } else if (text.indexOf('east') > -1) {
                         callback(null, {text: 'You try to go EAST, but like we just told you, there\'s a freakin\' SPACESHIP there.'});
                     } else {
                         callback(null, {text: 'There\'s a SPACESHIP present, and that\'s where you want to go? This game might not be for you...'});
@@ -93,35 +93,85 @@ locations.earth = {
         }
     },
     spaceship: {
-        message: {text: 'You are now inside the SPACESHIP! There are buttons on a DASHBOARD in front of you. What looks like lockers to the RIGHT.'},
+        message: {text: 'You are now inside the SPACESHIP! There is a DASHBOARD in front of you and what looks like LOCKERS to the RIGHT.'},
         actions: {
             'push': {
-                synonyms: ['push', 'push button', 'press'],
+                synonyms: ['push', 'press'],
                 fn: function (user, text, callback) {
-                    if (text.toLowerCase().indexOf('red') > -1) {
-                        callback({area: 'space', location: 'spaceship'});
-                    } else if (text.toLowerCase().indexOf('blue') > -1) {
-                        // this is where we need to call a you're dead function and explode the freakin ship and show a picture of the freakin exploded dead ship
+                    if (text.indexOf('red') > -1) {
+                        callback({area: 'spaceshipAlpha', location: 'level1'});
+                    } else if (text.indexOf('blue') > -1) {
+                        // TODO this is where we need to call a you're dead function and explode the freakin ship and show a picture of the freakin exploded dead ship
                         callback(null, {text: 'BOOOOOOOOOOOM!!!!!!! YOU\'RE FREAKIN DEAD!!!!!!!!!!'});
                     } else {
-                        callback(null, {text: 'Pushing that doesn\'t do anything immediate... Wait... No, nothing.'});
+                        callback(null, {text: 'Pushing that doesn\'t do anything immediate... Wait... No... nothing.'});
                     }
                 }
             },
             'look at': {
                 fn: function (user, text, callback) {
-                    if (text.toLowerCase().indexOf('dashboard') > -1 || text.toLowerCase().indexOf('buttons') > -1) {
+                    if (text.indexOf('dashboard') > -1) {
                         callback(null, {text: 'There are buttons and controls all over the place. A RED and BLUE button is glowing.'});
+                    } else if (text.indexOf('lockers') > -1) {
+                        callback(null, {text: 'Some futuristic looking LOCKERS. I wonder if there\'s anything useful inside?'});
                     } else {
-                        callback(null, {text: ''});
+                        callback(null, {text 'That isn\'t as interesting as some of the other things here. Try LOOKing AT something else.'});
+                    }
+                }
+            },
+            'open': {
+                synonyms: ['open', 'explore'],
+                fn: function (user, text, callback) {
+                    if (text.indexOf('locker') > -1) {
+                        callback(null, {text: 'There are SPACESUITs in here! And what looks like some kind of SAFE. Cool!'});
+                    } else {
+                        callback(null, {text: 'That doesn\'t open up. Not with the tools that you have now, anyways.'});
+                    }
+                }
+            },
+            'get': {
+                fn: function (user, text, callback) {
+                    if (text.indexOf('spacesuit') > -1) {
+                        // TODO add freakin spacesuit to inventory
+                        callback(null, {text: 'You\'ve acquired a SPACESUIT! Looks like this baby will let you breathe in SPACE!'});
+                    } else if (text.indexOf('safe') > -1) {
+                        callback(null, {text: 'That is waaaay too heavy to GET. Must be made out of some crazy inter-galactic element.'});
+                    } else {
+                        callback(null, {text: 'That isn\'t something to GET.'});
+                    }
+                }
+            },
+            'break': {
+                synonyms: ['break', 'bust'],
+                fn: function (user, text, callback) {
+                    if (text.indexOf('safe') > -1) {
+                        callback(null, {text: 'That is a SAFE from outerspace, man. Could you BREAK a SAFE on EARTH? Now your hand hurts.'});
+                    } else {
+                        callback(null, {text: 'Tough guy eh? Move along, you might hurt yourself.'});
                     }
                 }
             },
             'go': {
                 fn: function (user, text, callback) {
-                    if (text.toLowerCase().indexOf('') > -1) {
-                        callback({area: 'earth', level: 'spaceship'});
+                    if (text.indexOf('space') > -1) {
+                        callback(null, {text: 'How high can you jump? Probably not high enough to get to SPACE, man. Find another way.'});
+                    } else {
+                        callback(null, {text: 'There isn\'t really anywhere you can GO from here. Maybe see what this SPACESHIP is capable of.'})
                     }
+                }
+            }
+        }
+    }
+};
+
+locations.spaceshipAlpha = {
+    level1 : {
+        message: {text: 'The DOOR slams shut! Everything starts to rumble and you are pasted to the floor. Suddenly... you\'re in SPACE!'},
+        actions: {
+            'look': {
+                synonyms: ['look'],
+                fn: function (user, text, callback) {
+                    callback(null, {text: 'Sweet. Space.'});
                 }
             }
         }
