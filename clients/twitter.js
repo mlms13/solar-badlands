@@ -34,7 +34,7 @@ var postMessage = function (replyMessage, callback) {
         if (err && err.code === 187) {
             console.warn("Our message was a duplicate, so we're saying something else instead.");
             // remove everything after the first space and replace it with our new message
-            replyMessage.status = message.substring(0, message.indexOf(' ') + 1) + getDupeMessageString();
+            replyMessage.status = replyMessage.status.substring(0, replyMessage.status.indexOf(' ') + 1) + getDupeMessageString();
             // then try to re-post
             postMessage(replyMessage);
             return;
