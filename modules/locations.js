@@ -528,7 +528,7 @@ locations.moon = {
                 }
             },
             'open': {
-                synonyms: ['open', 'unlock'],,
+                synonyms: ['open', 'unlock'],
                 fn: function (user, text, callback) {
                     if (text.indexOf('safe') > -1) {
                         db.addInventoryItem(user.handle, [{name: 'sword', qty: 1, bonus: {hp: 0, off: 50, def: 0}}], function (err, saved) {
@@ -626,7 +626,7 @@ locations.moon = {
                             } else {
                                 callback({area: 'moon', level: 'dead'});
                             }
-                        }
+                        });
                     } else {
                         callback(null, {text: 'You can\'t fight whatever it is you\'re trying to fight you freakin hothead.'});
                     }
