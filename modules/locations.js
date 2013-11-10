@@ -1,3 +1,4 @@
+var db = require('./db.js');
 var locations = {};
 
 locations.earth = {
@@ -56,8 +57,16 @@ locations.earth = {
                 fn: function (user, text, callback) {
                     if (text.indexOf('mom') > -1) {
                         // TODO update freakin inventory
-
-                        callback(null, {text: 'You got a SANDWICH, and JUICE BOX from MOM. USE these when your health gets low. They have been added to your INVENTORY.'});
+                        db.addInventoryItem(user.handle, [{name: 'sandwich', qty: 1, bonus: {hp: 10, off: 0, def: 0}}, {name: 'juice box', qty: 1, bonus: {hp: 5, off: 0, def: 0}}], function (err, saved) {
+                            if (err) { 
+                                callback(null, {text: 'You were supposed to get an item. We don\'t think you did. Sorry about your luck.'});
+                            }
+                            else if (saved === 2) {
+                                callback(null, {text: 'You got a SANDWICH and JUICE BOX from MOM. USE these when your health gets low. They have been added to your INVENTORY.'});
+                            } else {
+                                callback(null, {text: 'Your INVENTORY was modified. Type STATUS to view it.'});
+                            }
+                        });
                     }
                 }
             },
@@ -122,7 +131,7 @@ locations.earth = {
                         callback({area: 'spaceshipAlpha', level: 'earthOrbit'});
                     } else if (text.indexOf('blue') > -1) {
                         // TODO this is where we need to call a you're dead function and explode the freakin ship and show a picture of the freakin exploded dead ship
-                        callback(null, {text: 'BOOOOOOOOOOOM!!!!!!! YOU\'RE FREAKIN DEAD!!!!!!!!!!'});
+                        callback(null, {text: 'BOOOOOOOOOOOM!!!!!!! YOU\'RE FREAKIN DEAD!!!!!!!!!! Just kidding, but try something else.'});
                     } else {
                         callback(null, {text: 'Pushing that doesn\'t do anything immediate... Wait... No... nothing.'});
                     }
@@ -153,7 +162,16 @@ locations.earth = {
                 fn: function (user, text, callback) {
                     if (text.indexOf('spacesuit') > -1) {
                         // TODO add freakin spacesuit to inventory
-                        callback(null, {text: 'You\'ve acquired a SPACESUIT! Looks like this baby will let you breathe in SPACE!'});
+                        db.addInventoryItem(user.handle, [{name: 'spacesuit', qty: 1, bonus: {hp: 0, off: 0, def: 5}}], function (err, saved) {
+                            if (err) { 
+                                callback(null, {text: 'You were supposed to get an item. We don\'t think you did. Sorry about your luck.'});
+                            }
+                            else if (saved) {
+                                callback(null, {text: 'You\'ve acquired a SPACESUIT! Looks like this baby will let you breathe in SPACE! You put it on.'});
+                            } else {
+                                callback(null, {text: 'Your INVENTORY might have been modified. Type STATUS to view it.'});
+                            }
+                        });
                     } else if (text.indexOf('safe') > -1) {
                         callback(null, {text: 'That is waaaay too heavy to GET. Must be made out of some crazy inter-galactic element.'});
                     } else {
@@ -258,7 +276,13 @@ locations.moon = {
                 synonyms: ['pull'],
                 fn: function (user, text, callback) {
                     if (text.indexOf('lever') > -1) {
-                        callback({area: 'moon', level: 'spaceshipOpen'});
+                        db.userHasItem(user.handle, 'spacesuit', function (err, itemExists)) {
+                            if (itemExists) {
+                                callback({area: 'moon', level: 'spaceshipOpen'});
+                            } else {
+                                callback(null, {text: 'The DOOR slides open and YOU DIE IMMEDIATELY. Okay, you don\'t. Is there something in here that will prevent that?'});
+                            }
+                        }
                     } else {
                         callback(null, {text: 'There is only one thing here you can pull, currently. This wasn\'t it...'});
                     }
@@ -276,7 +300,7 @@ locations.moon = {
         }
     },
     spaceshipOpen: {
-        message: {text: 'Sounds like some pressure was released. And the DOOR slides open. '},
+        message: {text: 'Sounds like some pressure was released. And the DOOR slides open revealing the porous, dry surface of the MOON.'},
         actions: {
             'look around': {
                 fn: function (user, text, callback) {
