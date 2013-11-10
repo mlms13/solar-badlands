@@ -4,6 +4,13 @@ var locations = require('./locations.js');
 
 // synonyms for global actions
 var globalActions = {
+    'help' : {
+        synonyms: ['help', "i'm stuck", 'im stuck', 'confused'],
+        fn: function (user, callback) {
+            console.log('The help function was called. Calling the callback.');
+            callback(null, {text: "Try to GO somewhere, GET something, or LOOK AROUND. Check out http://polar-badlands.2013.nodeknockout.com/help for more."});
+        }
+    },
     'inventory': {
         synonyms: ['inventory', 'show inventory', 'show items', 'items'],
         fn: function (user) {
@@ -134,7 +141,7 @@ module.exports.sendInput = function (username, input, cb) {
                 if (!action) {
                     cb(null, {text: getInvalidOperationMessage()});
                 } else if (action.isGlobal) {
-                    // TODO, need to respond here after global is set up
+                    // Respond here
                     globalActions[action.action].fn(user, function (err, response) {
                         cb(err, response);
                     });
