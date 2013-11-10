@@ -38,18 +38,6 @@ var globalActions = {
             // tweet the default message for the current user.location
             callback(null, locations[user.location.area][user.location.level].actions["look around"]);
         }
-    },
-    'return': {
-        synonyms: ['return', 'go back', 'leave'],
-        fn: function (user) {
-            // return to user.previousLocation
-        }
-    },
-    'status': {
-        synonyms: ['status', 'character', 'me'],
-        fn: function (user) {
-            // tweet stats about the user
-        }
     }
 };
 
