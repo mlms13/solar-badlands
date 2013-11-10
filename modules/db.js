@@ -85,7 +85,7 @@ module.exports.userHasItem = function (userStr, itemName, callback) {
         }
 
         for (i = 0; i < user.inventory.length; i += 1) {
-            if (user.inventory[i].name === itemName) {
+            if (user.inventory[i].name === itemName && user.inventory[i].qty > 0) {
                 itemExists = true;
                 break;
             }
