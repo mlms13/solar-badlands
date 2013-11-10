@@ -1001,10 +1001,11 @@ th.hidden-lg,td.hidden-lg{display:table-cell !important}
 .icon-cog:before{content:"\e60e"}
 .icon-home:before{content:"\e60f"}
 .icon-saturn:before{content:"\e610"}
-body{padding-top:50px}
+body{background:#eee;padding-top:56px}
+img{max-width:100%}
 .navbar-brand{font-size:28px;line-height:56px;padding:0}
 .navbar-nav>li>a{font-size:16px;line-height:26px}
 .logo{background:#94a;background-image:linear-gradient(#94a, #728);border-radius:4px;color:#fff;float:left;font-size:50px;line-height:50px;margin:3px 12px 3px 0;width:50px}
-.block-center{margin:0 auto}
+.block-center{margin:0 auto;max-width:390px}
 .align-center{text-align:center}
-.login{min-width:400px;width:30%}
+.photo-instruction-box{background:#fff;box-shadow:0 0 4px rgba(0,0,0,0.3);margin-top:15px;padding:10px}

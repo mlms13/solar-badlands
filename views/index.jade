@@ -1,12 +1,16 @@
 extends layout
 
 block content
-    form.block-center.login(action="/", method="post")
+    .photo-instruction-box.block-center
+        img(src="/images/exit_planet.jpg", alt="Your spaceship is leaving the planet!")
+        h1 Instructions
+        p Solar Badlands is a text-based RPG that you play on Twitter. Tweet at <a href="https://twitter.com/solarbadlands">@solarbadlands</a> with the text "start game" to get started.
+    form.login.block-center(action="/", method="post")
         h1.align-center Check Your Progress
 
         if error
             .alert.alert-danger
-                button.close(type='button', data-dismiss='alert', aria-hidden='true') &times;
+                button.close(type="button", data-dismiss="alert", aria-hidden="true") &times;
                 strong= error.title
                 span= " " + error.body
         input.form-control(placeholder="Enter your Twitter username", name="tw-handle")

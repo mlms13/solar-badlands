@@ -4,11 +4,13 @@
 @import "fonts";
 
 body {
-  padding-top: 50px;
+    background: #eee;
+    padding-top: 56px; // to accomodate our 56px fixed menu at the top
 }
-
+img {
+    max-width: 100%;
+}
 // bootstrap overrides:
-
 .navbar-brand {
     font-size: 28px;
     line-height: 56px;
@@ -20,7 +22,6 @@ body {
 }
 
 // custom stuff
-
 .logo {
     background: #94a;
     background-image: linear-gradient(#94a, #728);
@@ -34,12 +35,16 @@ body {
 }
 .block-center {
     margin: 0 auto;
+    max-width: 390px;
 }
 .align-center {
     text-align: center;
 }
-.login {
-    min-width: 400px;
-    width: 30%;
-}
 
+// instructions
+.photo-instruction-box {
+    background: #fff;
+    box-shadow: 0 0 4px rgba(0,0,0,0.3);
+    margin-top: 15px;
+    padding: 10px;
+}
