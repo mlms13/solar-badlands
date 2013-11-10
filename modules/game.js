@@ -104,11 +104,16 @@ var parseForActions = function (loc, input, callback) {
 
 // public function to receive message (and respond appropriately)
 module.exports.sendInput = function (username, input, cb) {
+    var userLocation; // this will be set to the actual location level object if a user is found
+
     db.getUser(username, function (err, user) {
         if (err) { cb(err); return; }
         if (user) {
-            // TODO: game parse input
-            parseForActions(locations[user.location.area][user.location.level], input, function (err, action, input) {
+            // figure out the user's location (as an actual location object)
+            userLocation = locations[user.location.area][user.location.level];
+
+            // parse input for actions that make sense in this context
+            parseForActions(userLocation, input, function (err, action, cleanInput) {
                 if (err) { cb(err); return; }
                 if (!action) {
                     cb(null, {text: "Either that is not a recognized action, or there is no use for that here. Reply with HELP if you need HELP."});
@@ -118,14 +123,14 @@ module.exports.sendInput = function (username, input, cb) {
                         cb(err, response);
                     });
                 } else {
-                    locations[user.location.area][user.location.level].actions[action.action].fn(user, input, function (location,  response) {
+                    userLocation.actions[action.action].fn(user, cleanInput, function (location, response) {
                         if (location) {
                             db.updateLocation(username, location, function (err, saved) {
                                 if (err) { cb(err); return; }
 
                                 db.getUser(username, function (err, user) {
                                     if (err) { cb(err); return; }
-                                    // if no error, callback will include tweeting location.look to user
+                                    // if no error, respond with the message object from the new location
                                     cb(null, locations[user.location.area][user.location.level].message);
                                 });
                             });
