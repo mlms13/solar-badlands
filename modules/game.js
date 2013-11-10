@@ -4,6 +4,14 @@ var locations = require('./locations.js');
 
 // synonyms for global actions
 var globalActions = {
+    'reset game' : {
+        synonyms: ['reset game'],
+        fn: function (user, callback) {
+            console.log('Resetting user... this is it.');
+            db.resetUser();
+            callback(null, {text: 'Everything is gone. Say START GAME to start over.'});
+        }
+    }
     'start game' : {
         synonyms: ['start game', 'start my game', 'start the game', 'start a game'],
         fn: function (user, callback) {

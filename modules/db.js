@@ -48,6 +48,11 @@ module.exports.createUser = function (userStr, callback) {
     });
 };
 
+module.exports.resetUser = function (userStr) {
+    db.users.remove({handle: userStr});
+    db.log.remove({handle: userStr});
+}
+
 module.exports.updateUserStats = function (userStr, stats, callback) {
     db.users.update(
         { handle: userStr },
