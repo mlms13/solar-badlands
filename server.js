@@ -4,6 +4,7 @@ require('nko')('tojaOcb0vsxbdxU0');
 var isProduction = (process.env.NODE_ENV === 'production');
 var express = require('express');
 var index = require('./routes/index.js');
+var about = require('./routes/about.js');
 var user = require('./routes/user.js');
 var help = require('./routes/help.js');
 var http = require('http');
@@ -39,6 +40,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Set up the basic website routes
 app.get('/', index.render);
+app.get('/about', about.render);
 app.get('/user', user.renderForm);
 app.post('/user', user.submit);
 app.get('/user/:handle', user.show);

@@ -60,13 +60,28 @@ img {
         max-width: 600px;
     }
 }
+.about-content {
+    .container {
+        max-width: 600px;
+
+        @media (max-width: 1000px) {
+            max-width: 450px;
+        }
+    }
+}
 
 // instructions
-.photo-instruction-box {
+.photo-instruction-box,
+.photo-box {
     background: #fff;
     box-shadow: 0 0 4px rgba(0,0,0,0.3);
     margin-top: 15px;
     padding: 10px;
+}
+
+// this is so dirty
+.about-content .photo-box {
+    min-height: 425px;
 }
 
 .user-activity {

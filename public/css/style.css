@@ -1012,7 +1012,9 @@ img{max-width:100%}
 .main-content{flex:auto}
 .home-content .container{max-width:390px}
 .help-content .container{max-width:600px}
-.photo-instruction-box{background:#fff;box-shadow:0 0 4px rgba(0,0,0,0.3);margin-top:15px;padding:10px}
+.about-content .container{max-width:600px}@media (max-width:1000px){.about-content .container{max-width:450px}}
+.photo-instruction-box,.photo-box{background:#fff;box-shadow:0 0 4px rgba(0,0,0,0.3);margin-top:15px;padding:10px}
+.about-content .photo-box{min-height:425px}
 .user-activity{background:#ddd}.user-activity .container{max-width:600px}
 .user-search{margin-left:auto;margin-right:auto;margin-bottom:25px;max-width:390px}
 .history img{border-radius:5px;flex:1 0 auto;max-height:48px;max-width:48px}
