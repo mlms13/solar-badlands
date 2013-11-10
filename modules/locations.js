@@ -99,7 +99,7 @@ locations.earth = {
                 synonyms: ['push', 'press'],
                 fn: function (user, text, callback) {
                     if (text.indexOf('red') > -1) {
-                        callback({area: 'spaceshipAlpha', location: 'level1'});
+                        callback({area: 'spaceshipAlpha', level: 'level1'});
                     } else if (text.indexOf('blue') > -1) {
                         // TODO this is where we need to call a you're dead function and explode the freakin ship and show a picture of the freakin exploded dead ship
                         callback(null, {text: 'BOOOOOOOOOOOM!!!!!!! YOU\'RE FREAKIN DEAD!!!!!!!!!!'});
@@ -115,7 +115,7 @@ locations.earth = {
                     } else if (text.indexOf('lockers') > -1) {
                         callback(null, {text: 'Some futuristic looking LOCKERS. I wonder if there\'s anything useful inside?'});
                     } else {
-                        callback(null, {text 'That isn\'t as interesting as some of the other things here. Try LOOKing AT something else.'});
+                        callback(null, {text: 'That isn\'t as interesting as some of the other things here. Try LOOKing AT something else.'});
                     }
                 }
             },
