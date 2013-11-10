@@ -16,7 +16,7 @@ locations.earth = {
             'go': {
                 fn: function (user, text, callback) {
                     if (text.toLowerCase().indexOf('stairs') > -1) {
-                        callback(locations.earth.downstairs);
+                        callback({ area: 'earth', level: 'downstairs'});
                     } else {
                         callback(null, 'You can\'t GO there.  It either isn\'t a place, or you aren\'t where you think you are.');
                     }
@@ -44,7 +44,7 @@ locations.earth = {
             'go': {
                 fn: function (user, text, callback) {
                     if (text.toLowerCase().indexOf('door') > -1) {
-                        callback(locations.earth.frontyard);
+                        callback({area: 'earth', level: 'frontyard'});
                     } else {
                         callback(null, 'That isn\'t a real place. Or it isn\'t a fake place. Matter of perspective.');
                     }

@@ -63,14 +63,14 @@ var getUsefulActions = function (loc) {
     return useful;
 };
 
-var parseForActions = function (loc, tweet, callback) {
+var parseForActions = function (loc, input, callback) {
     var i, action, useful, firstAction = {};
 
-    // normalize the tweet
-    tweet = tweet.replace(config.ourHandle, '').toLowerCase();
+    // normalize the input
+    input = input.replace(config.ourHandle, '').toLowerCase();
 
     // set up firstAction object
-    firstAction.position = 141; // bigger than the length of a tweet
+    firstAction.position = 141; // bigger than the length of a input
 
     // get a an object with all of the actions that we care about
     useful = getUsefulActions(loc);
@@ -80,9 +80,9 @@ var parseForActions = function (loc, tweet, callback) {
             // for each synonym in the corresponding array
             for (i = 0; i < useful[action].length; i += 1) {
                 // keep track of the first index of one of the words/phrases
-                if (tweet.indexOf(useful[action][i]) > -1  &&
-                    tweet.indexOf(useful[action][i]) < firstAction.position) {
-                    firstAction.position = tweet.indexOf(useful[action][i]);
+                if (input.indexOf(useful[action][i]) > -1  &&
+                    input.indexOf(useful[action][i]) < firstAction.position) {
+                    firstAction.position = input.indexOf(useful[action][i]);
                     firstAction.action = action;
                 }
             }
@@ -96,7 +96,7 @@ var parseForActions = function (loc, tweet, callback) {
     firstAction = firstAction.action ? firstAction : null;
 
     // pass an error (currently undefined), 
-    callback && callback(undefined, firstAction);
+    callback && callback(undefined, firstAction, input);
 };
 
 // public function to receive message (and respond appropriately)
@@ -105,7 +105,29 @@ module.exports.sendInput = function (username, input, cb) {
         if (err) { cb(err); return; }
         if (user) {
             // TODO: game parse input
-            console.log("We should figure out what the user said and respond accordingly.");
+            parseForActions(user.location.level, input, function (err, action, input) {
+                if (err) { cb(err); return; }
+                if (action.isGlobal) {
+                    globalActions[action.action].fn(user);
+                } else {
+                    locations[user.location.area][user.location.level][action.action].fn(user, input, function (location,  response) {
+                        if (location) {
+                            db.updateLocation(username, location, function (err, saved) {
+                                if (err) { cb(err); return; }
+
+                                db.getUser(username, function (err, user) {
+                                    if (err) { cb(err); return; }
+                                    // if no error, callback will include tweeting location.look to user
+                                    cb(null, locations[user.location.area][user.location.level].message);
+                                });
+                            });
+                        } else {
+                            cb(null, response);
+                        }
+                    });
+                }
+            });
+
             cb(null, "We found you, but we have no idea what to do next.");
         } else if (input.toLowerCase().indexOf("start") > -1 && input.toLowerCase().indexOf("game") > -1) {
             db.createUser(username, function (err, user) {
