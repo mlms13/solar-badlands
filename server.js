@@ -5,6 +5,7 @@ var isProduction = (process.env.NODE_ENV === 'production');
 var express = require('express');
 var index = require('./routes/index.js');
 var user = require('./routes/user.js');
+var help = require('./routes/help.js');
 var http = require('http');
 var path = require('path');
 var lessMiddleware = require('less-middleware');
@@ -40,6 +41,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get('/', index.render);
 app.post('/', index.submit);
 app.get('/user/:handle', user.show);
+app.get('/help', help.render);
 
 twitter.startClient();
 

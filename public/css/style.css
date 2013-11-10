@@ -1011,6 +1011,7 @@ img{max-width:100%}
 .align-center{text-align:center}
 .main-content{flex:auto}
 .home-content .container{max-width:390px}
+.help-content .container{max-width:600px}
 .photo-instruction-box{background:#fff;box-shadow:0 0 4px rgba(0,0,0,0.3);margin-top:15px;padding:10px}
 .user-activity{background:#ddd}.user-activity .container{max-width:600px}
 .user-search{margin-bottom:25px}
