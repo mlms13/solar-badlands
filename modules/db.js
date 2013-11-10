@@ -1,4 +1,12 @@
+var Twit = require('twit');
 var config = require('../config.js');
+
+var T = new Twit({
+    consumer_key: config.consumer_key,
+    consumer_secret: config.consumer_secret,
+    access_token: config.access_token,
+    access_token_secret: config.access_token_secret
+});
 
 var collections = ["users", "log"];
 var db = require("mongojs").connect(config.mongohq_uri, collections);
@@ -13,20 +21,29 @@ module.exports.getUser = function (userStr, callback) {
 };
 
 module.exports.createUser = function (userStr, callback) {
-    db.users.save({
-        handle: userStr,
-        createdOn: new Date(),
-        stats: {
-            exp: 0,
-            hp: 20,
-            off: 10,
-            def: 10
-        }
-    }, function (err, saved) {
-        if (err) {
-            console.log("There was an error in the db.createUser call: " + err);
-        }
-        callback(err, saved);
+    // Use Twitter API to find the user's profile image.
+    T.get('users/show', {screen_name: userStr}, function (err, user) {
+        var imageUrl = '';
+        // if we manage to get the image, cool
+        if (!err) { imageUrl = user.profile_image_url; }
+
+        // either way, we'll still create the user in the db
+        db.users.save({
+            handle: userStr,
+            twImage: imageUrl,
+            createdOn: new Date(),
+            stats: {
+                exp: 0,
+                hp: 20,
+                off: 10,
+                def: 10
+            }
+        }, function (err, saved) {
+            if (err) {
+                console.log("There was an error in the db.createUser call: " + err);
+            }
+            callback(err, saved);
+        });
     });
 };
 
