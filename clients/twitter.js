@@ -12,14 +12,41 @@ var T = new Twit({
 
 var stream = T.stream('user', {'with': 'user'});
 
+var getDupeMessageString = function () {
+    // Twitter doesn't like sending the same message over and over again
+    // so the user tweeting "LOOK AROUND" can be problematic if we recently posted the same thing to them.
+    // This will lay out several possible messages that we can tweet back instead.
+    var messages = [
+        "I'm pretty sure I just told you that. Maybe try scrolling.",
+        "The knowledge you seek is already available to you. In your Twitter feed.",
+        "Think hard, or maybe just look a little harder. The information has already been given to you.",
+        "I'm not in the mood to repeat myself. Are you in the mood to use your scroll wheel?",
+        "If you make me repeat myself too much, Twitter may think I'm just a bot."
+    ];
+
+    // return a random message
+    return messages[Math.floor(Math.random() * messages.length)];
+}
+
 var postMessage = function (replyMessage, callback) {
     T.post('statuses/update', replyMessage, function (err, reply) {
-        if (err) {
-            console.log('Error in Twitter.js attempting to post message');
-            console.log(err);
+        // if twitter is complaining about a duplicate message
+        if (err && err.code === 187) {
+            console.warn("Our message was a duplicate, so we're saying something else instead.");
+            // remove everything after the first space and replace it with our new message
+            replyMessage.status = message.substring(0, message.indexOf(' ') + 1) + getDupeMessageString();
+            // then try to re-post
+            postMessage(replyMessage);
+            return;
+        } else if (err) {
+            // if the error isn't related to duplicate messages, log it
+            console.error('An error happened while tring to post to Twitter.');
+            console.error(err);
+            return;
         }
 
-        callback(err, reply);
+        // call the callback and pass along the error
+        callback && callback(null, reply);
     });
 };
 
@@ -35,9 +62,8 @@ module.exports.startClient = function () {
 
                 // send `response` to user
                 postMessage({ in_reply_to_status_id: tweet.id_str, status: '@' + tweet.user.screen_name + ' ' + response.text }, function (err, reply) {
-                    if (err) { return; }
-
-                    // on success, save their message and our response in the db
+                    // errors are handled by the postMessage function.
+                    // We'll assume there are none if this callback is called.
                     db.updateLog(tweet, reply);
                     console.log('A message was posted, check Twitter for proof.');
                 });
