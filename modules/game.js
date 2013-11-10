@@ -12,8 +12,9 @@ var globalActions = {
     },
     'look around': {
         synonyms: ['look around', 'survey', 'surroundings'],
-        fn: function (user) {
+        fn: function (user, callback) {
             // tweet the default message for the current user.location
+            callback(null, locations[user.location.area][user.location.level].message);
         }
     },
     'return': {
@@ -33,8 +34,9 @@ var globalActions = {
 // synonyms for common location-specific actions
 var commonLocationActions = {
     'get'       : ['get', 'take', 'pick up'],
-    'go'        : ['go', 'enter'],
-    'look at'   : ['look at', 'inspect']
+    'go'        : ['go', 'enter', 'goto'],
+    'look at'   : ['look at', 'inspect'],
+    'talk'      : ['talk', 'speak', 'say', 'chat']
 };
 
 
@@ -112,7 +114,9 @@ module.exports.sendInput = function (username, input, cb) {
                     cb(null, "Sorry, we didn't understand what you were trying to say.  Reply with HELP if you need HELP.");
                 } else if (action.isGlobal) {
                     // TODO, need to respond here after global is set up
-                    globalActions[action.action].fn(user);
+                    globalActions[action.action].fn(user, function (err, response) {
+                        cb(err, response);
+                    });
                 } else {
                     locations[user.location.area][user.location.level].actions[action.action].fn(user, input, function (location,  response) {
                         if (location) {
