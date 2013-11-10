@@ -1006,7 +1006,7 @@ img{max-width:100%}
 .navbar-brand{font-size:28px;line-height:56px;padding:0}
 .navbar-nav>li>a{font-size:16px;line-height:26px}
 .unstyled{list-style:none;margin:0;padding:0}
-.logo{border-radius:5px;float:left;height:50px;margin:3px 12px 3px 0;width:50px}
+.logo{border-radius:5px;float:left;height:50px;margin:3px 12px 3px 0;width:50px}@media (max-width:500px){.logo{display:none}}
 .block-center{margin:0 auto}
 .align-center{text-align:center}
 .main-content{flex:auto}
