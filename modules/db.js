@@ -143,7 +143,7 @@ module.exports.removeInventoryItem = function (userStr, item, callback) {
 
         // nothing was updated
         callback(null, 0);
-    };
+    });
 };
 
 module.exports.updateLog = function (input, response) {
