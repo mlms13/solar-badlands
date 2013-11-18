@@ -558,7 +558,7 @@ locations.moon = {
                     if (text.indexOf('door') > -1) {
                         callback({area: 'moon', level: 'surface3'});
                     } else {
-                        callback(null, 'You shall not pass.');
+                        callback(null, {text: 'You shall not pass.'});
                     }
                 }
             }
