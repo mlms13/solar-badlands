@@ -1,7 +1,5 @@
-// https://github.com/nko4/website/blob/master/module/README.md#nodejs-knockout-deploy-check-ins
-require('nko')('tojaOcb0vsxbdxU0');
-
-var isProduction = (process.env.NODE_ENV === 'production');
+// i think for heroku we can get on without this
+// var isProduction = (process.env.NODE_ENV === 'production');
 var express = require('express');
 var index = require('./routes/index.js');
 var about = require('./routes/about.js');
@@ -10,7 +8,8 @@ var help = require('./routes/help.js');
 var http = require('http');
 var path = require('path');
 var lessMiddleware = require('less-middleware');
-var port = (isProduction ? 80 : 8000);
+//var port = (isProduction ? 80 : 8000);
+var port = process.env.PORT || 3000;
 
 // clients
 var twitter = require('./clients/twitter.js');
@@ -48,18 +47,23 @@ app.get('/help', help.render);
 
 twitter.startClient();
 
-// Start the HTTP server
-http.createServer(app).listen(port, function(err) {
-
-    if (err) { console.error(err); process.exit(-1); }
-
-    // if run as root, downgrade to the owner of this file
-    if (process.getuid && process.getuid() === 0) {
-        require('fs').stat(__filename, function(err, stats) {
-            if (err) { return console.error(err); }
-            process.setuid(stats.uid);
-        });
-    }
-
-    console.log('Server running at http://0.0.0.0:' + port + '/');
+app.listen(port, function () {
+    console.log('Static web server running on port ' + port);
 });
+
+// Start the HTTP server
+// NODE KNOCKOUT STUFF, lets see if we can do without it?
+// http.createServer(app).listen(port, function(err) {
+
+//     if (err) { console.error(err); process.exit(-1); }
+
+//     // if run as root, downgrade to the owner of this file
+//     if (process.getuid && process.getuid() === 0) {
+//         require('fs').stat(__filename, function(err, stats) {
+//             if (err) { return console.error(err); }
+//             process.setuid(stats.uid);
+//         });
+//     }
+
+//     console.log('Server running at http://0.0.0.0:' + port + '/');
+// });
